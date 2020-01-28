@@ -1,10 +1,10 @@
 # python_for_AMC
 This is the automation of AMC redaction. The internal AMC-TXT should be working in a similar way, but I wanted the one that reflects my needs, if you want you can freely use it :)
 
-Place the .py file in the folder with questions you want to convert.
+Place the <b>python_for_AMC.py</b> file in the folder with questions you want to convert.
 
 The main rules:
-1. Questions should be saved as Qs.txt file utf-8 encoded
+1. Questions should be saved as <b>Qs.txt</b> file utf-8 encoded
 2. Simple question should start with triple 'q' = <tt>'qqq'</tt> (see the example below)
 3. Multi correct answer questions should start with triple <tt>'qmq'</tt> (see the example below)
 4. Correct answer starts with <tt>'+++'</tt>
@@ -26,4 +26,4 @@ qqqWhat is the best animated film?
 ---Barbi
 ---Masha and the Bear
 </pre>
-The processed file will be in the same folder, called prcssdQs.txt
+The processed file will be in the same folder, called <b>prcssdQs.txt</b>
