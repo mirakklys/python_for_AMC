@@ -1,12 +1,12 @@
 # python_for_AMC
 This is the automation of AMC redaction. The internal AMC-TXT should be working in a similar way, but I wanted the one that reflects my needs, if you want you can freely use it :)
 
-Place the <b>python_for_AMC.py</b> file in the folder with questions you want to convert.
+Place both <b>python_for_AMC.py</b> and <b>wrongCorrect.png</b> files in the folder with questions you want to convert.
 
 The main rules:
 1. Questions should be saved as <b>Qs.txt</b> file utf-8 encoded
 2. Simple question should start with triple 'q' = <tt>'qqq'</tt> (see the example below)
-3. Multi correct answer questions should start with triple <tt>'qmq'</tt> (see the example below)
+<del>3. Multi correct answer questions should start with triple <tt>'qmq'</tt> (see the example below)</del>
 4. Correct answer starts with <tt>'+++'</tt>
 5. Wrong answer starts with <tt>'---'</tt>
 
