@@ -27,3 +27,20 @@ qqqWhat is the best animated film?
 ---Masha and the Bear
 </pre>
 The processed file will be in the same folder, called <b>prcssdQs.txt</b>
+
+# List of changes:
+
+# 0.0.2
+
+Added date, number of copy and name managing feature. In the terminal it will ask sequentially: number of copies, the date of the exam, the name of the exam
+
+Please, note that the date is stricted to 2099 Dec 31 max, 2020 Jan 01 min, any other dates will cause the stop and error message
+
+Inside the prcssdQs.txt you will need to change/correct the section <b>{etu}</b>, and <b>\clearpage <=> \AMCcleardoublepage</b> depending on your needs
+  
+For now it prints answer sheet on a separate piece of paper, should be easier to handle scanning
+
+There is still no python script to handle <tt>qmq</tt>. It is comming in the next version
+
+# 0.0.1
+The beginning of the project
