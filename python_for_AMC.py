@@ -1,132 +1,194 @@
+#!/usr/bin/python3.7
+### GLOBAL DECLARATIONS
+### All text after %%% sign will go to comments in LaTeX-based AMC
+
+### imports
+
+import sys
+
+### declarations
+
 quizFile = open('Qs.txt', encoding = "utf8") 
 quizQs = quizFile.read().splitlines()
-quizQs.append('\n')
 quizFile.close()
 outfile = open('prcssdQs.txt', 'wt', encoding = "utf8")
-outfile.writelines('''\\documentclass[a4paper,12pt]{article}
+count = 1
+questionNumber = 0
+
+### inputs for test
+
+copyNumber = input("How many copies will you need? ")
+dateOfTest = input("Enter the date of the exam in the format YYYYMMDD: ")
+dateCheck = int(dateOfTest)
+if dateCheck < 20200101 or dateCheck > 20991231:
+	print("Wrong date format! Revise the date.")
+	sys.exit()
+examName = input("Please name your exam (if two lines needed place two backslash \\\\ on the linebreak): ")
+
+### date processing
+
+monthList = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')
+months31 = [0,2,4,6,7,9,11]
+months30 = [3,7,8,10]
+
+yearInt = int(dateOfTest[:4])
+monthInt = int(dateOfTest[4:6])
+dayInt = int(dateOfTest[6:])
+
+if yearInt >= 2020:
+	year = yearInt
+else:
+	print("Wrong date format! Revise the exam year.")
+	sys.exit()
+
+if monthInt < 13 and monthInt > 0:
+	month = monthInt - 1
+else:
+	print("Wrong date format! Revise the month.")
+	sys.exit()
+
+if month in months30 and dayInt < 31:
+	day = dayInt
+elif month in months31 and dayInt < 32:
+	day = dayInt
+elif month == 1 and year % 4 == 0 and dayInt < 30:
+	day = dayInt
+elif month == 1 and year % 4 != 0 and dayInt < 29:
+	day = dayInt
+else:
+	print("Wrong date format! Revise the date.")
+	sys.exit()
+
+dateOfTestM = monthList[month] + " " + str(day) + ", " + str(year)
+
+### FIRST PART OF AMC FILE
+
+outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\\documentclass[a4paper,11pt]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Declaring packages
 \\usepackage[utf8x]{inputenc}
 \\usepackage[T1]{fontenc}
-\\usepackage[box,completemulti,separateanswersheet]{automultiplechoice} %this is the main AMC package, you have to have it imported
-
+\\usepackage[box,completemulti,separateanswersheet]{automultiplechoice}
+\\usepackage{graphicx}
+\\graphicspath{{.//}}
+\\usepackage{multicol}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Starting of the document
 \\begin{document}
-
-\\hfill \\namefield{\\fbox{[5] %this is a naming section. You might need it to identify students' works afterwards
-\\begin{minipage}{.5\\linewidth}
-Firstname and lastname:
-
-\\vspace*{.5cm}\\dotfill
-\\vspace*{1mm}
-\\end{minipage}
-}}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Student's name part
+\\hfill
+	\\fbox{
+		\\begin{minipage}{.5\\linewidth}
+		Firstname and lastname:\\\\
+		\\vspace*{.1cm}\\dotfill
+		\\vspace*{1mm}
+		\\end{minipage}
+	} % fbox
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Document properties
 \\AMCrandomseed{1237893}
-
-\\def\\AMCformQuestion#1{\\vspace{\\AMCformVSpace}\\par {\\sc Question #1:} }
-
+\\def\\AMCformQuestion#1{\\vspace{\\AMCformVSpace}\\par{\\bf Q#1:} }
+\\AMCformVSpace=0.3ex
+\\AMCformHSpace=0.3ex
 \\setdefaultgroupmode{withoutreplacement}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Grouping the questions-answers
+\\element{general}{''')
 
-%all questions should have an ID, they are indicated within curly braces after \\begin{question}. For the first question the ID=='prez'. It is needed to manage annotation of the results
+### QUESTIONS LOOP
 
-\\element{general}
-{''')
-count = 1
 for each in range(len(quizQs)):
-    if each == 0:
-        if quizQs[0][0:3] == 'qqq':
-            outfile.writelines('''\n  \\begin{question}{00''' + str(count) + "}\n    " + quizQs[0][4:] + "\n    \\begin{choices}\n")
-            count += 1
-        else:
-            outfile.writelines('''\n  \\begin{questionmult}{00''' + str(count) + "}\n    " + quizQs[0][4:] + "\n    \\begin{choices}\n")
-            count += 1
-    if quizQs[each][0:3] == 'qqq':
-        outfile.writelines('''    \\end{choices}
-  \\end{question!!!!!}
-}
-
-\element{general}
-{
-  \\begin{question}{00''' + str(count) + "}\n    " + quizQs[each][3:] + "\n    \\begin{choices}\n")
-        count += 1
-    if quizQs[each][0:3] == 'qmq':
-        outfile.writelines('''    \\end{choices}
-  \\end{question!!!!!}
-}
-
+	if each == 0:
+		if quizQs[0][0:3] == 'qqq':
+			if count < 10:
+				questionNumber = "q00" + str(count)
+			elif count >= 100:
+				questionNumber = "q" + str(count)
+			else:
+				questionNumber = "q0" + str(count)
+			outfile.writelines('\n  \\begin{question}{' + questionNumber + "}\n    " + quizQs[0][4:] + "\n    \\begin{choices}\n")
+			count += 1
+		else:
+			continue
+	elif quizQs[each][0:3] == '+++':
+		outfile.writelines('      \\correctchoice{' + quizQs[each][3:] + '}\n')
+	elif quizQs[each][0:3] == '---':
+		outfile.writelines('      \\wrongchoice{' + quizQs[each][3:] + '}\n')
+	elif quizQs[each][0:3] == 'qqq':
+		if count < 10:
+			questionNumber = "q00" + str(count)
+		elif count >= 100:
+			questionNumber = "q" + str(count)
+		else:
+			questionNumber = "q0" + str(count)
+		count += 1
+		outfile.writelines('''    \\end{choices}
+  \\end{question}
+} % element
 \\element{general}
 {
-  \\begin{questionmult}{00''' + str(count) + "}\n    " + quizQs[each][3:] + "\n    \\begin{choices}\n")
-        count += 1
-    if quizQs[each][0:3] == '+++':
-        outfile.writelines("      \\correctchoice{" + quizQs[each][3:] + "}\n")
-    if quizQs[each][0:3] == '---':
-        outfile.writelines("      \\wrongchoice{" + quizQs[each][3:] + "}\n")
+  \\begin{question}{''' + questionNumber + "}\n    " + quizQs[each][3:] + "\n    \\begin{choices}\n")
+	else:
+		continue
 
-outfile.writelines('''
-    \\end{choices}
-  \\end{question!!!!!}
-}
-\\onecopy{10}{ %here you indicate the number of copies for the exam
+### LAST PART OF AMC FILE
 
-%%% beginning of the test sheet header:
+outfile.writelines('''    \\end{choices}
+  \\end{question}
+} % element
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Actual test sheets
+\\onecopy{''' + copyNumber + '''}{
+  %%% Beginning of the test sheet header
+  %%% Exam Name
+  \\begin{flushleft}
+  {\\bf ''' + examName + '''}
+  \\end{flushleft}
+  %%% Exam Date
+  \\begin{minipage}{.4\\linewidth}
+  \\bf '''+ str(dateOfTestM) + ''' %date if needed
+  \\end{minipage}
+  \\vspace{1ex}
+  %%% Questions
 
-{\\bf NAME OF THE EXAM} %name your exam
+  \\insertgroup{general}
+  \\AMCcleardoublepage 
+  %%% Use either \\clearpage or \\AMCcleardoublepage options. Double page will result in even number of pages for questions, so that you can print out questions double-sided and answer sheets separately
+  %%% Beginning of the answer sheet
+  \\AMCformBegin{
+    %%% Student ID number
+    \\AMCcode{etu}{9} 
+    \\begin{minipage}[b]{9cm}
+    \\includegraphics[width=8cm]{wrongCorrect.png}\\\\ % Wrong and correct filling of the sheet
+    $\\leftarrow{}$\\hspace{0pt plus 2cm} please encode your student number in the boxes to the left,
+    and write your first and last names below.$\\downarrow{}$\\hspace{0pt plus 1cm} \\vspace*{.2cm}
+    \\vspace{1ex}
+    \\hfill\\namefield{
+      \\fbox{
+        \\begin{minipage}{.9\\linewidth}
+        First name and last name:\\\\
+        \\vspace*{.1cm}\\dotfill
+        \\vspace*{0.5mm}
+        \\end{minipage}
+      } % fbox
+    } % namefield
+    \\hfill\\vspace{5ex}\\end{minipage}\\hspace*{\\fill}
+  } % \\AMCformBegin
+  %%% Beginning of the answer sheet body 
+  \\begin{center}
+    \\bf\\normalsize Answers must be given exclusively on this sheet:
+    answers given on the other sheets will be ignored.
+  \\end{center}
+  %%% Ending of the answer sheet
+  \\begin{multicols}{2}
+  \\AMCform
+  \\end{multicols}
+  \\AMCcleardoublepage 
+} % onecopy
+\\end{document}''')
 
-\\vspace*{.5cm} %the following section can be removed
-\\begin{minipage}{.4\\linewidth}
-\\large\\bf Jan. 1st, 2020 %date if needed
-\\end{minipage}
+### Finalised programme
 
-\\begin{center}\\bf
-Duration : 5 minutes %indicate the Duration of the exam if needed
-
-\\end{center}
-\\vspace{3ex}
-
-%%% end of the header
-
-\\insertgroup{general}
-
-\\clearpage %use either \\clearpage or \\cleardoublepage options. Double page will result in even number of pages for questions, so that you can print out questions double-sided and answer sheets separately
-
-\\AMCformBegin
-
-%%% beginning of the answer sheet header
-
-
-{
-      \\AMCcode{etu}{9} %9 indicates the digits number needed to code your students ID. etu option indicates the parameter \\AMCcode you will need to associate your students automatically
-  \\begin{minipage}[b]{6.5cm}
-  
-  $\\leftarrow{}$\\hspace{0pt plus 1cm} please encode your student number in the boxes to the left,
-  and write your first and last names below.$\\downarrow{}$\\hspace{0pt plus 1cm} \\vspace*{.5cm}
-\\vspace{3ex}
-\\hfill\\namefield{\\fbox{    
-    \\begin{minipage}{.9\\linewidth}
-
-      First name and last name:
-      
-      
-      \\vspace*{.5cm}\\dotfill
-      \\vspace*{0.5mm}
-    \\end{minipage}
-  }}\\hfill\\vspace{5ex}\\end{minipage}\\hspace*{\\fill}
-}
-
-\\begin{center}
-\\bf\\Large Answers must be given exclusively on this sheet:
-answers given on the other sheets will be ignored.
-\\end{center}
-
-%%% end of the answer sheet header
-
-\\AMCform
-
-
-\\clearpage
-
-}
-
-
-\\end{document}
-''')
 outfile.close()
