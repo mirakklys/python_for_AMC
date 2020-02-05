@@ -18,8 +18,17 @@ questionNumber = 0
 ### inputs for test
 
 copyNumber = input("How many copies will you need? ")
+try:
+	copyNumber = int(copyNumber)
+except:
+	print("Wrong value. Should be a number, not a string")
+	sys.exit()
 dateOfTest = input("Enter the date of the exam in the format YYYYMMDD: ")
-dateCheck = int(dateOfTest)
+try:
+	dateCheck = int(dateOfTest)
+except:
+	print("Wrong value. Should be a number, e.g. 20201231")
+	sys.exit()
 if dateCheck < 20200101 or dateCheck > 20991231:
 	print("Wrong date format! Revise the date.")
 	sys.exit()
@@ -99,17 +108,26 @@ outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 ### QUESTIONS LOOP
 
+### function to number the question
+
+def questNum():
+	global count
+	if count < 10:
+		questNum = "q00" + str(count)
+	elif count >= 100:
+		questNum = "q" + str(count)
+	else:
+		questNum = "q0" + str(count)
+	count += 1
+	return questNum
+
+### for loops for questions
+
 for each in range(len(quizQs)):
 	if each == 0:
 		if quizQs[0][0:3] == 'qqq':
-			if count < 10:
-				questionNumber = "q00" + str(count)
-			elif count >= 100:
-				questionNumber = "q" + str(count)
-			else:
-				questionNumber = "q0" + str(count)
+			questionNumber = questNum()
 			outfile.writelines('\n  \\begin{question}{' + questionNumber + "}\n    " + quizQs[0][4:] + "\n    \\begin{choices}\n")
-			count += 1
 		else:
 			continue
 	elif quizQs[each][0:3] == '+++':
@@ -117,13 +135,7 @@ for each in range(len(quizQs)):
 	elif quizQs[each][0:3] == '---':
 		outfile.writelines('      \\wrongchoice{' + quizQs[each][3:] + '}\n')
 	elif quizQs[each][0:3] == 'qqq':
-		if count < 10:
-			questionNumber = "q00" + str(count)
-		elif count >= 100:
-			questionNumber = "q" + str(count)
-		else:
-			questionNumber = "q0" + str(count)
-		count += 1
+		questionNumber = questNum()
 		outfile.writelines('''    \\end{choices}
   \\end{question}
 } % element
@@ -140,7 +152,7 @@ outfile.writelines('''    \\end{choices}
 } % element
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Actual test sheets
-\\onecopy{''' + copyNumber + '''}{
+\\onecopy{''' + str(copyNumber) + '''}{
   %%% Beginning of the test sheet header
   %%% Exam Name
   \\begin{flushleft}
@@ -152,7 +164,6 @@ outfile.writelines('''    \\end{choices}
   \\end{minipage}
   \\vspace{1ex}
   %%% Questions
-
   \\insertgroup{general}
   \\AMCcleardoublepage 
   %%% Use either \\clearpage or \\AMCcleardoublepage options. Double page will result in even number of pages for questions, so that you can print out questions double-sided and answer sheets separately
