@@ -121,6 +121,14 @@ def questNum():
 	count += 1
 	return questNum
 
+# function for wrong and correct answers
+
+def wrongAnswer(argAnswer):
+	outfile.writelines('      \\correctchoice{' + argAnswer + '}\n')
+	
+def correctAnswer(argAnswer):
+	outfile.writelines('      \\correctchoice{' + argAnswer + '}\n')
+	
 ### for loops for questions
 
 for each in range(len(quizQs)):
@@ -131,9 +139,9 @@ for each in range(len(quizQs)):
 		else:
 			continue
 	elif quizQs[each][0:3] == '+++':
-		outfile.writelines('      \\correctchoice{' + quizQs[each][3:] + '}\n')
+		correctAnswer(quizQs[each][3:])
 	elif quizQs[each][0:3] == '---':
-		outfile.writelines('      \\wrongchoice{' + quizQs[each][3:] + '}\n')
+		wrongAnswer(quizQs[each][3:])
 	elif quizQs[each][0:3] == 'qqq':
 		questionNumber = questNum()
 		outfile.writelines('''    \\end{choices}
