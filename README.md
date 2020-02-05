@@ -6,11 +6,11 @@ Place both <b>python_for_AMC.py</b> and <b>wrongCorrect.png</b> files in the fol
 The main rules:
 1. Questions should be saved as <b>Qs.txt</b> file utf-8 encoded
 2. Simple question should start with triple 'q' = <tt>'qqq'</tt> (see the example below)
-3. <del>Multi correct answer questions should start with triple <tt>'qmq'</tt> (see the example below)</del>
+3. Multi correct answer questions should start with triple <tt>'qmq'</tt> (see the example below) - Available in Ver 0.1.0
 4. Correct answer starts with <tt>'+++'</tt>
 5. Wrong answer starts with <tt>'---'</tt>
 
-Since it is one of the first versions, the code will process the simple question-answer elements. In future, it will also process horizontal answers (as <tt>'qhq'</tt>), and image containing questions (as <tt>'qiq'</tt>).
+Since it is one of the first versions, the code will process the simple question-answer elements. In future, it will also process horizontal answers (as <tt>'qhq'</tt>), and image containing questions (as <tt>'qiq'</tt>) (this one is going to appear in Ver 0.2.0).
 
 The example for processing will look like:
 
@@ -38,7 +38,7 @@ Added the number of digits in student ID number, now it is forom 2 to 12
 
 Removed some repeated codes, functions rule!
 
-Forked the NU-specific python script (it has 9 digits student ID number by default)
+Forked the NU-specific python script (it has 9-digit student ID number by default)
 
 Next update will be a major one, with the support for <tt>qmq</tt> and <tt>qhq</tt>!
 
