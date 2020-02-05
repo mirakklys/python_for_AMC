@@ -1,4 +1,4 @@
-# python_for_AMC
+# Python-assisted source.tex creation. Only for tests with separate answer sheets!
 This is the automation of AMC redaction. The internal AMC-TXT should be working in a similar way, but I wanted the one that reflects my needs, if you want you can freely use it :)
 
 Place both <b>python_for_AMC.py</b> and <b>wrongCorrect.png</b> files in the folder with questions you want to convert.
@@ -37,6 +37,8 @@ Added the check-ups for user input, which catch wrong type
 Added the number of digits in student ID number, now it is forom 2 to 12
 
 Removed some repeated codes, functions rule!
+
+Forked the NU-specific python script (it has 9 digits student ID number by default)
 
 Next update will be a major one, with the support for <tt>qmq</tt> and <tt>qhq</tt>!
 
