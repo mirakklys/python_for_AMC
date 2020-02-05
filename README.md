@@ -1,4 +1,4 @@
-# Python-assisted source.tex creation. Only for tests with separate answer sheets!
+# Auto Multiple Choice. AMC. Python-assisted source.tex creation. Only for tests with separate answer sheets!
 This is the automation of AMC redaction. The internal AMC-TXT should be working in a similar way, but I wanted the one that reflects my needs, if you want you can freely use it :)
 
 Place both <b>python_for_AMC.py</b> and <b>wrongCorrect.png</b> files in the folder with questions you want to convert.
