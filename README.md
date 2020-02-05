@@ -30,6 +30,16 @@ The processed file will be in the same folder, called <b>prcssdQs.txt</b>
 
 # List of changes:
 
+# 0.0.3
+
+Added the check-ups for user input, which catch wrong type
+
+Added the number of digits in student ID number, now it is forom 2 to 12
+
+Removed some repeated codes, functions rule!
+
+Next update will be a major one, with the support for <tt>qmq</tt> and <tt>qhq</tt>!
+
 # 0.0.2
 
 Added date, number of copy and name managing feature. In the terminal it will ask sequentially: number of copies, the date of the exam, the name of the exam
