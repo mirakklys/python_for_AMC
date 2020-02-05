@@ -33,7 +33,15 @@ if dateCheck < 20200101 or dateCheck > 20991231:
 	print("Wrong date format! Revise the date.")
 	sys.exit()
 examName = input("Please name your exam (if two lines needed place two backslash \\\\ on the linebreak): ")
-
+studentIdNumber = input("How many digits are in student ID number? (2-12 digits allowed) ")
+try:
+	studentIdNumber = int(studentIdNumber)
+except:
+	print("Wrong value. Should be a number, not a string")
+	sys.exit()
+if studentIdNumber < 2 or studentIdNumber > 12:
+	print("Error! Should be between 2 and 12 digits")
+	sys.exit()
 ### date processing
 
 monthList = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')
@@ -170,7 +178,7 @@ outfile.writelines('''    \\end{choices}
   %%% Beginning of the answer sheet
   \\AMCformBegin{
     %%% Student ID number
-    \\AMCcode{etu}{9} 
+    \\AMCcode{etu}{''' + str(studentIdNumber) + '''} 
     \\begin{minipage}[b]{9cm}
     \\includegraphics[width=8cm]{wrongCorrect.png}\\\\ % Wrong and correct filling of the sheet
     $\\leftarrow{}$\\hspace{0pt plus 2cm} please encode your student number in the boxes to the left,
