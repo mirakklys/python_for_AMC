@@ -4,13 +4,14 @@ This is the automation of AMC redaction. The internal AMC-TXT should be working 
 Place both <b>python_for_AMC.py</b> and <b>wrongCorrect.png</b> files in the folder with questions you want to convert.
 
 The main rules:
-1. Questions should be saved as <b>Qs.txt</b> file utf-8 encoded
+1. Questions should be saved in separate <b>Qs.txt</b>, <b>Qms.txt</b> or <b>Qhs.txt</b>, file utf-8 encoded depending on the type of questions
 2. Simple question should start with triple 'q' = <tt>'qqq'</tt> (see the example below)
-3. Multi correct answer questions should start with triple <tt>'qmq'</tt> (see the example below) - Available in Ver 0.1.0
+3. Multi correct answer questions should start with triple <tt>'qmq'</tt> (see the example below)
 4. Correct answer starts with <tt>'+++'</tt>
 5. Wrong answer starts with <tt>'---'</tt>
+6. Horizontal answer questions should start with <tt>'qhq'</tt>
 
-Since it is one of the first versions, the code will process the simple question-answer elements. In future, it will also process horizontal answers (as <tt>'qhq'</tt>), and image containing questions (as <tt>'qiq'</tt>) (this one is going to appear in Ver 0.2.0).
+Since it is one of the first versions, the code will process the simple question-answer elements. In future, it will also process image containing questions (as <tt>'qiq'</tt>) (will appear in Ver 0.2.0).
 
 The example for processing will look like:
 
@@ -29,6 +30,16 @@ qqqWhat is the best animated film?
 The processed file will be in the same folder, called <b>prcssdQs.txt</b>
 
 # List of changes:
+
+# 0.1.0 (9.1.0 for fixed 9-digit student ID number)
+
+Major update with the addition of <tt>qmq</tt> and <tt>qhq</tt> support
+
+Now you will need to put all multiple correct answer questions into <b>Qms.txt</b> file utf-8 encoded, and all horizontal questions into <b>Qhs.txt</b> file utf-8 encoded
+
+Please note that the number of columns per question (<tt>qhq</tt> ones) is defaulted to 5. Adjust according to your needs by changing this parameter in final .tex source file of AMC. In next version i will adjust it so that person could regulate it by coding <tt>qhq</tt> tag, e.g. <tt>qh2q</tt> or <tt>qh4q</tt>
+
+Also, now code is much cleaner. Fewer possible weak points
 
 # 0.0.3
 
