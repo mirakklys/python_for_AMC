@@ -5,6 +5,7 @@
 ### imports
 
 import sys
+import os.path
 
 ### declarations
 
@@ -14,6 +15,47 @@ quizFile.close()
 outfile = open('prcssdQs.txt', 'wt', encoding = "utf8")
 count = 1
 questionNumber = 0
+
+### FUNCTIONS
+
+### function to number the question
+
+def questNum():
+	global count
+	if count < 10:
+		questNum = "q00" + str(count)
+	elif count >= 100:
+		questNum = "q" + str(count)
+	else:
+		questNum = "q0" + str(count)
+	count += 1
+	return questNum
+
+### function to start the question
+
+def outfileBeg(argQuizMulti, qmult = '', horiz = False):
+	global questionNumber
+	questionNumber = questNum()
+	horizLine = ''
+	if horiz == True:
+		horizLine = '    \\begin{multicols}{5}\n'
+	outfile.writelines('\\element{general}{\n  \\begin{question' + qmult + '}{' + questionNumber + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n')
+
+### function to finish the question
+
+def outfileEnding(qmult = '', horiz = False):
+	horizLine = ''
+	if horiz == True:
+		horizLine = '    \\end{multicols}\n'
+	outfile.writelines('    \\end{choices}\n' + horizLine + '  \\end{question' + qmult + '}\n} % element\n')
+
+### functions for correct and wrong answers
+
+def correctChoice(choice):
+	outfile.writelines('      \\correctchoice{' + choice + '}\n')
+
+def wrongChoice(choice):
+	outfile.writelines('      \\wrongchoice{' + choice + '}\n')
 
 ### inputs for test
 
@@ -35,11 +77,11 @@ if dateCheck < 20200101 or dateCheck > 20991231:
 examName = input("Please name your exam (if two lines needed place two backslash \\\\ on the linebreak): ")
 studentIdNumber = input("How many digits are in student ID number? (2-12 digits allowed) ")
 try:
-	studentIdNumber = int(studentIdNumber)
+	studentId = int(studentIdNumber)
 except:
 	print("Wrong value. Should be a number, not a string")
 	sys.exit()
-if studentIdNumber < 2 or studentIdNumber > 12:
+if studentId < 2 or studentId > 12:
 	print("Error! Should be between 2 and 12 digits")
 	sys.exit()
 ### date processing
@@ -111,53 +153,73 @@ outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \\AMCformHSpace=0.3ex
 \\setdefaultgroupmode{withoutreplacement}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Grouping the questions-answers
-\\element{general}{''')
+%% Grouping the questions-answers\n''')
 
 ### QUESTIONS LOOP
 
-### function to number the question
-
-def questNum():
-	global count
-	if count < 10:
-		questNum = "q00" + str(count)
-	elif count >= 100:
-		questNum = "q" + str(count)
-	else:
-		questNum = "q0" + str(count)
-	count += 1
-	return questNum
-
-### for loops for questions
+### loop for simple questions
 
 for each in range(len(quizQs)):
-	if each == 0:
-		if quizQs[0][0:3] == 'qqq':
-			questionNumber = questNum()
-			outfile.writelines('\n  \\begin{question}{' + questionNumber + "}\n    " + quizQs[0][4:] + "\n    \\begin{choices}\n")
-		else:
-			continue
+	if each == 0 and quizQs[0][0:3] == 'qqq':
+		questionNumber = questNum()
+		outfileBeg(quizQs[0][4:])
 	elif quizQs[each][0:3] == '+++':
-		outfile.writelines('      \\correctchoice{' + quizQs[each][3:] + '}\n')
+		correctChoice(quizQs[each][3:])
 	elif quizQs[each][0:3] == '---':
-		outfile.writelines('      \\wrongchoice{' + quizQs[each][3:] + '}\n')
+		wrongChoice(quizQs[each][3:])
 	elif quizQs[each][0:3] == 'qqq':
 		questionNumber = questNum()
-		outfile.writelines('''    \\end{choices}
-  \\end{question}
-} % element
-\\element{general}
-{
-  \\begin{question}{''' + questionNumber + "}\n    " + quizQs[each][3:] + "\n    \\begin{choices}\n")
+		outfileEnding()
+		outfileBeg(quizQs[each][3:])
 	else:
 		continue
 
+outfileEnding()
+
+### loop for mult questions
+
+if os.path.exists('Qms.txt'):
+	quizMultiFile = open('Qms.txt', encoding = 'utf8') 
+	quizQms = quizMultiFile.read().splitlines()
+	quizMultiFile.close()
+	multSymbole = '\\begin{flushleft}\n  {\\bf Questions using the sign \\multiSymbole{} have several correct answers}\n\\end{flushleft}'
+	for each in range(len(quizQms)):
+		if each == 0 and quizQms[0][0:3] == 'qmq':
+			outfileBeg(quizQms[0][4:], 'mult')
+		elif quizQms[each][0:3] == '+++':
+			correctChoice(quizQms[each][3:])
+		elif quizQms[each][0:3] == '---':
+			wrongChoice(quizQms[each][3:])
+		elif quizQms[each][0:3] == 'qmq':
+			outfileEnding('mult')
+			outfileBeg(quizQms[each][3:], 'mult')
+		else:
+			continue
+	outfileEnding('mult')
+
+### loop for horiz questions
+
+if os.path.exists('Qhs.txt'):
+	quizHorizFile = open('Qhs.txt', encoding = 'utf8') 
+	quizQhs = quizHorizFile.read().splitlines()
+	quizHorizFile.close()
+	for each in range(len(quizQhs)):
+		if each == 0 and quizQhs[0][0:3] == 'qhq':
+			outfileBeg(quizQhs[0][4:],horiz = True)
+		elif quizQhs[each][0:3] == '+++':
+			correctChoice(quizQhs[each][3:])
+		elif quizQhs[each][0:3] == '---':
+			wrongChoice(quizQhs[each][3:])
+		elif quizQhs[each][0:3] == 'qhq':
+			outfileEnding(horiz = True)
+			outfileBeg(quizQhs[each][3:], horiz = True)
+		else:
+			continue
+	outfileEnding(horiz = True)
+
 ### LAST PART OF AMC FILE
 
-outfile.writelines('''    \\end{choices}
-  \\end{question}
-} % element
+outfile.writelines('''
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Actual test sheets
 \\onecopy{''' + str(copyNumber) + '''}{
@@ -168,17 +230,19 @@ outfile.writelines('''    \\end{choices}
   \\end{flushleft}
   %%% Exam Date
   \\begin{minipage}{.4\\linewidth}
-  \\bf '''+ str(dateOfTestM) + ''' %date if needed
+  \\bf '''+ dateOfTestM + ''' %date if needed
   \\end{minipage}
-  \\vspace{1ex}
+  \\vspace{1ex}''' + multSymbole + '''
   %%% Questions
+
+
   \\insertgroup{general}
   \\AMCcleardoublepage 
   %%% Use either \\clearpage or \\AMCcleardoublepage options. Double page will result in even number of pages for questions, so that you can print out questions double-sided and answer sheets separately
   %%% Beginning of the answer sheet
   \\AMCformBegin{
     %%% Student ID number
-    \\AMCcode{etu}{''' + str(studentIdNumber) + '''} 
+    \\AMCcode{etu}{''' + studentIdNumber + '''} 
     \\begin{minipage}[b]{9cm}
     \\includegraphics[width=8cm]{wrongCorrect.png}\\\\ % Wrong and correct filling of the sheet
     $\\leftarrow{}$\\hspace{0pt plus 2cm} please encode your student number in the boxes to the left,
