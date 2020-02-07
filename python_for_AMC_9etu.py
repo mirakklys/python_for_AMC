@@ -15,6 +15,7 @@ quizFile.close()
 outfile = open('prcssdQs.txt', 'wt', encoding = "utf8")
 count = 1
 questionNumber = 0
+columnNum = '5'
 
 ### FUNCTIONS
 
@@ -34,11 +35,12 @@ def questNum():
 ### function to start the question
 
 def outfileBeg(argQuizMulti, qmult = '', horiz = False):
+	global columnNum
 	global questionNumber
 	questionNumber = questNum()
 	horizLine = ''
 	if horiz == True:
-		horizLine = '    \\begin{multicols}{5}\n'
+		horizLine = '    \\begin{multicols}{' + columnNum + '}\n'
 	outfile.writelines('\\element{general}{\n  \\begin{question' + qmult + '}{' + questionNumber + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n')
 
 ### function to finish the question
@@ -57,11 +59,29 @@ def correctChoice(choice):
 def wrongChoice(choice):
 	outfile.writelines('      \\wrongchoice{' + choice + '}\n')
 
+### function to code column number
+
+def columnNumber(value):
+	global columnNum
+	global questionNumber
+	try:
+		int(value)
+		columnNum = value
+	except:
+		thisIsSparta = int(questionNumber[1:]) + 1
+		if thisIsSparta < 10:
+			questNumb = "q00" + str(thisIsSparta)
+		elif thisIsSparta >= 100:
+			questNumb = "q" + str(thisIsSparta)
+		else:
+			questNumb = "q0" + str(thisIsSparta)
+		print('The question ' + questNumb + ' will have the default number of columns {5}')
+
 ### inputs for test
 
 copyNumber = input("How many copies will you need? ")
 try:
-	copyNumber = int(copyNumber)
+	int(copyNumber)
 except:
 	print("Wrong value. Should be a number, not a string")
 	sys.exit()
@@ -153,14 +173,12 @@ outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for each in range(len(quizQs)):
 	if each == 0 and quizQs[0][0:3] == 'qqq':
-		questionNumber = questNum()
 		outfileBeg(quizQs[0][4:])
 	elif quizQs[each][0:3] == '+++':
 		correctChoice(quizQs[each][3:])
 	elif quizQs[each][0:3] == '---':
 		wrongChoice(quizQs[each][3:])
 	elif quizQs[each][0:3] == 'qqq':
-		questionNumber = questNum()
 		outfileEnding()
 		outfileBeg(quizQs[each][3:])
 	else:
@@ -196,13 +214,15 @@ if os.path.exists('Qhs.txt'):
 	quizQhs = quizHorizFile.read().splitlines()
 	quizHorizFile.close()
 	for each in range(len(quizQhs)):
-		if each == 0 and quizQhs[0][0:3] == 'qhq':
+		if each == 0 and quizQhs[0][0:2] == 'qh':
+			columnNumber(quizQhs[0][2])
 			outfileBeg(quizQhs[0][4:],horiz = True)
 		elif quizQhs[each][0:3] == '+++':
 			correctChoice(quizQhs[each][3:])
 		elif quizQhs[each][0:3] == '---':
 			wrongChoice(quizQhs[each][3:])
-		elif quizQhs[each][0:3] == 'qhq':
+		elif quizQhs[each][0:2] == 'qh':
+			columnNumber(quizQhs[each][2])
 			outfileEnding(horiz = True)
 			outfileBeg(quizQhs[each][3:], horiz = True)
 		else:
@@ -214,7 +234,7 @@ if os.path.exists('Qhs.txt'):
 outfile.writelines('''
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Actual test sheets
-\\onecopy{''' + str(copyNumber) + '''}{
+\\onecopy{''' + copyNumber + '''}{
   %%% Beginning of the test sheet header
   %%% Exam Name
   \\begin{flushleft}
