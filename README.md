@@ -5,13 +5,14 @@ Place both <b>python_for_AMC.py</b> and <b>wrongCorrect.png</b> files in the fol
 
 The main rules:
 1. Questions should be saved in separate <b>Qs.txt</b>, <b>Qms.txt</b> or <b>Qhs.txt</b>, file utf-8 encoded depending on the type of questions
-2. Simple question should start with triple 'q' = <tt>'qqq'</tt> (see the example below)
+2. Simple question should start with <tt>'qqq'</tt> (see the example below)
 3. Multi correct answer questions should start with triple <tt>'qmq'</tt> (see the example below)
-4. Correct answer starts with <tt>'+++'</tt>
-5. Wrong answer starts with <tt>'---'</tt>
-6. Horizontal answer questions should start with <tt>'qhq'</tt>
+4. Horizontal answer questions should start with <tt>'qhq'</tt> (5 columns by default) or <tt>'qhN'</tt>, where N is an integer reflecting the number of columns. I decided not to use the <tt>{choiceshoriz}</tt> since this option won't align the answers left. If you have 3 and less answers (e.g. True or False) you could leave default <tt>'qhq'</tt>
+5. Correct answer starts with <tt>'+++'</tt>
+6. Wrong answer starts with <tt>'---'</tt>
 
-Since it is one of the first versions, the code will process the simple question-answer elements. In future, it will also process image containing questions (as <tt>'qiq'</tt>) (will appear in Ver 0.2.0).
+So far, most of the goals I set for the project achieved (simple questions, qmq, qhq/qhN)
+In future, the code will also process image containing questions (as <tt>'qiq'</tt>) and open answer questions (will appear in Ver 0.2.0 and further).
 
 The example for processing will look like:
 
@@ -26,10 +27,28 @@ qqqWhat is the best animated film?
 +++Frozen
 ---Barbi
 ---Masha and the Bear
+
+qhqI, Robot novel was written by Isaac Asimov
++++True
+---False
+
+qh4What is our genome made of
++++DNA and proteins
+---Proteins
+---Lipids
+---Sugars
 </pre>
 The processed file will be in the same folder, called <b>prcssdQs.txt</b>
 
 # List of changes:
+
+# 0.1.1 (9.1.1)
+
+Added feature of columns choice
+
+Minor improvements to the code
+
+Multiple correct horizontal answered questions are coming in the next release
 
 # 0.1.0 (9.1.0 for fixed 9-digit student ID number)
 
