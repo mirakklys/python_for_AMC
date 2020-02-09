@@ -44,11 +44,13 @@ The processed file will be in the same folder, called <b>prcssdQs.txt</b>
 
 # 0.1.1 (9.1.1)
 
-Added feature of columns choice
+Added feature of column number choice. Now you will need to declare the feature with <tt>'qhq'</tt> (default) and <tt>'qh4'</tt> (4 columns)
 
 Minor improvements to the code
 
 Multiple correct horizontal answered questions are coming in the next release
+
+Also released the open question script - <b>open_Qs_for_AMC.py</b>. You will need to declare the number of lines and maximum mark for the question, e.g. <tt>qoLM</tt>, where L is a number of lines and M is the max points received for the all correct answer. Partial point will be calculated depending on the number of lines and max point - <pre>partialPoint = maxPoint / (numberOfLines - 1)</pre>
 
 # 0.1.0 (9.1.0 for fixed 9-digit student ID number)
 
