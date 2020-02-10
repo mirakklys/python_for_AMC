@@ -166,7 +166,7 @@ for each in range(len(quizQos)):
 	pointsPerCorrect = maxPoints / numberOfLines
 	correctPoints = pointsPerCorrect
 	if each == 0 and quizQos[0][0:2] == 'qo':
-		outfileBeg(quizQos[0][5:])
+		outfileBeg(quizQos[0][4:])
 		partialCorrectChoice()
 		correctChoice()
 	elif quizQos[each][0:2] == 'qo':
