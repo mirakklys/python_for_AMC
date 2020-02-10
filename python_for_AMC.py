@@ -16,6 +16,7 @@ outfile = open('prcssdQs.txt', 'wt', encoding = "utf8")
 count = 1
 questionNumber = 0
 columnNum = '5'
+multSymbole = ''
 
 ### FUNCTIONS
 
@@ -181,7 +182,7 @@ outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for each in range(len(quizQs)):
 	if each == 0 and quizQs[0][0:3] == 'qqq':
-		outfileBeg(quizQs[0][4:])
+		outfileBeg(quizQs[0][3:])
 	elif quizQs[each][0:3] == '+++':
 		correctChoice(quizQs[each][3:])
 	elif quizQs[each][0:3] == '---':
@@ -203,7 +204,7 @@ if os.path.exists('Qms.txt'):
 	multSymbole = '\\begin{flushleft}\n  {\\bf Questions using the sign \\multiSymbole{} have several correct answers}\n\\end{flushleft}'
 	for each in range(len(quizQms)):
 		if each == 0 and quizQms[0][0:3] == 'qmq':
-			outfileBeg(quizQms[0][4:], 'mult')
+			outfileBeg(quizQms[0][3:], 'mult')
 		elif quizQms[each][0:3] == '+++':
 			correctChoice(quizQms[each][3:])
 		elif quizQms[each][0:3] == '---':
@@ -224,7 +225,7 @@ if os.path.exists('Qhs.txt'):
 	for each in range(len(quizQhs)):
 		if each == 0 and quizQhs[0][0:2] == 'qh':
 			columnNumber(quizQhs[0][2])
-			outfileBeg(quizQhs[0][4:],horiz = True)
+			outfileBeg(quizQhs[0][3:],horiz = True)
 		elif quizQhs[each][0:3] == '+++':
 			correctChoice(quizQhs[each][3:])
 		elif quizQhs[each][0:3] == '---':
