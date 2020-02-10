@@ -12,7 +12,7 @@ The main rules:
 6. Wrong answer starts with <tt>'---'</tt>
 
 So far, most of the goals I set for the project achieved (simple questions, qmq, qhq/qhN)
-In future, the code will also process image containing questions (as <tt>'qiq'</tt>) and open answer questions (will appear in Ver 0.2.0 and further).
+In future, the code will also process image containing questions (as <tt>'qiq'</tt>).
 
 The example for processing will look like:
 
@@ -41,6 +41,16 @@ qh4What is our genome made of
 The processed file will be in the same folder, called <b>prcssdQs.txt</b>
 
 # List of changes:
+
+# 0.2.1
+
+I jumped 0.2.0 because introduced the open answer questions in 0.1.1 version
+
+So, finally it is one step closer to the final line :)
+
+Minor code changes. Some windows machines when process txt in utf-8 encoding put some additional character at the beginning of the file. Since most people shouldn't use Win with AMC, I changed the code so it is suitable to Linux/Unix users :)
+
+Now all files will have the same version numbering, so that it doesn't look stupidly messy
 
 # 0.1.1 (9.1.1)
 
