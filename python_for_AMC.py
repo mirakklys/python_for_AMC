@@ -115,12 +115,6 @@ yearInt = int(dateOfTest[:4])
 monthInt = int(dateOfTest[4:6])
 dayInt = int(dateOfTest[6:])
 
-if yearInt >= 2020:
-	year = yearInt
-else:
-	print("Wrong date format! Revise the exam year.")
-	sys.exit()
-
 if monthInt < 13 and monthInt > 0:
 	month = monthInt - 1
 else:
@@ -128,18 +122,18 @@ else:
 	sys.exit()
 
 if month in months30 and dayInt < 31:
-	day = dayInt
+	day = str(dayInt)
 elif month in months31 and dayInt < 32:
-	day = dayInt
-elif month == 1 and year % 4 == 0 and dayInt < 30:
-	day = dayInt
-elif month == 1 and year % 4 != 0 and dayInt < 29:
-	day = dayInt
+	day = str(dayInt)
+elif month == 1 and yearInt % 4 == 0 and dayInt < 30:
+	day = str(dayInt)
+elif month == 1 and yearInt % 4 != 0 and dayInt < 29:
+	day = str(dayInt)
 else:
 	print("Wrong date format! Revise the date.")
 	sys.exit()
 
-dateOfTestM = monthList[month] + " " + str(day) + ", " + str(year)
+dateOfTestM = monthList[month] + " " + day + ", " + str(yearInt)
 
 ### FIRST PART OF AMC FILE
 
@@ -157,16 +151,7 @@ outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Starting of the document
 \\begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Student's name part
-\\hfill
-	\\fbox{
-		\\begin{minipage}{.5\\linewidth}
-		Firstname and lastname:\\\\
-		\\vspace*{.1cm}\\dotfill
-		\\vspace*{1mm}
-		\\end{minipage}
-	} % fbox
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %%% Document properties
 \\AMCrandomseed{1237893}
 \\def\\AMCformQuestion#1{\\vspace{\\AMCformVSpace}\\par{\\bf Q#1:} }
@@ -245,18 +230,26 @@ outfile.writelines('''
 %%% Actual test sheets
 \\onecopy{''' + copyNumber + '''}{
   %%% Beginning of the test sheet header
+  %%% Student's name part
+  \\hfill
+    \\fbox{
+	\\begin{minipage}{.5\\linewidth}
+	Firstname and lastname:\\\\
+	\\vspace*{.1cm}\\dotfill
+	\\vspace*{1mm}
+	\\end{minipage}
+     } % fbox
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   %%% Exam Name
-  \\begin{flushleft}
-  {\\bf ''' + examName + '''}
-  \\end{flushleft}
   %%% Exam Date
-  \\begin{minipage}{.4\\linewidth}
-  \\bf '''+ dateOfTestM + ''' %date if needed
+  \\vspace{1ex}
+  \\begin{minipage}
+  {\\bf ''' + examName + ''' \\ hfill \\bf '''+ dateOfTestM + '''} %date if needed
   \\end{minipage}
-  \\vspace{1ex}''' + multSymbole + '''
+  \\vspace{1ex} \\''' + multSymbole + '''
   %%% Questions
-
-
+  \\vspace{1ex}
+  \\
   \\insertgroup{general}
   \\AMCcleardoublepage 
   %%% Use either \\clearpage or \\AMCcleardoublepage options. Double page will result in even number of pages for questions, so that you can print out questions double-sided and answer sheets separately
