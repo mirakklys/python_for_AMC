@@ -1,0 +1,25 @@
+quizFile = open('Qs.txt',encoding = 'utf-8')
+quizQs = [each.strip() for each in quizFile]
+outfile = open('prcssdQs.txt', 'wt')
+count = 1
+questionNumber = 0
+columnNum = '5'
+multSymbole = ''
+print(quizQs)
+quizFile.close()
+dictOfQs = {}
+def questNum():
+    global count
+    StrCount = str(count)
+    if count < 10:
+        questNum = startQ + "00" + strCount
+    elif count >= 100:
+        questNum = startQ + strCount
+    else:
+        questNum = startQ + "0" + strCount
+    count += 1
+    return questNum
+for each in quizQs:
+    if each[:2] == 'qq':
+        startQ = each[:2]
+        dictOfQs[questNum()] = dictOfQs.get(questNum, each)
