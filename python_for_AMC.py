@@ -10,7 +10,10 @@ import os.path
 ### declarations
 
 quizFile = open('Qs.txt', encoding = "utf8") 
-quizQs = quizFile.read().splitlines()
+quizQs = [each.strip() for each in quizFile if len(each) > 1]
+#for each in quizFile:
+#	if len(each) > 1:
+#		quizQs.append(each.strip())
 quizFile.close()
 outfile = open('prcssdQs.txt', 'wt', encoding = "utf8")
 count = 1
