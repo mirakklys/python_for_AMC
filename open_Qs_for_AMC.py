@@ -18,7 +18,7 @@ quizQos = []
 
 for each in quizQs:
 	if each != '':
-		quizQos.append(each)
+		quizQos.append(each.strip())
 	else:
 		continue
 
