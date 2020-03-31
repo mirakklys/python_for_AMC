@@ -6,6 +6,7 @@
 
 import sys
 import os.path
+import time
 
 ### declarations
 
@@ -20,6 +21,16 @@ count = 1
 questionNumber = 0
 columnNum = '5'
 multSymbole = ''
+
+### Preparing the questions for LaTeX
+
+prohibSymbs = ['\\', '%', '$', '{', '_', '|', '™', '£', '#', '&', '}', '§', '<', '®', '©', '°', '>', '~', '^', 'ULINEDSPACE']
+escSymbs = ['\\\\', '\\%', '\\$', '\\{', '\\_', 'extbar', 'exttrademark', '\\pounds', '\\#', '\\&', '\\}', '\\S', '\\txtless', '\\textregistered', '\\copyright', '\\textdegree', '\\textgreater', '\\~{}', '\\^{}', ]
+
+for every in range(len(quizQs)):
+	for each in range(len(prohibSymbs)):
+		if prohibSymbs[each] in quizQs[every]:
+			quizQs[every] = quizQs[every].replace(prohibSymbs[each], escSymbs[each])
 
 ### FUNCTIONS
 
@@ -108,11 +119,15 @@ except:
 if studentId < 2 or studentId > 12:
 	print("Error! Should be between 2 and 12 digits")
 	sys.exit()
+askMult = input("Will you have any multiple correct choice answers? (y/n)")
+if askMult.lower() == 'y' or askMult.lower() == 'yes':
+	multSymbole = '\\begin{flushleft}\n  {\\bf Questions using the sign \\multiSymbole{} have several correct answers}\n\\end{flushleft}'
+
 ### date processing
 
 monthList = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')
-months31 = [0,2,4,6,7,9,11]
-months30 = [3,7,8,10]
+months31 = (0,2,4,6,7,9,11)
+months30 = (3,7,8,10)
 
 yearInt = int(dateOfTest[:4])
 monthInt = int(dateOfTest[4:6])
@@ -156,6 +171,8 @@ outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \\usepackage{graphicx}
 \\graphicspath{{.//}}
 \\usepackage{multicol}
+\\usepackage{textcomp}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Starting of the document
 \\begin{document}
@@ -182,64 +199,55 @@ outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ### QUESTIONS LOOP
 
 ### loop for simple questions
-
-for each in range(len(quizQs)):
-	if each == 0 and quizQs[0][0:3] == 'qqq':
-		outfileBeg(quizQs[0][3:])
-	elif quizQs[each][0:3] == '+++':
-		correctChoice(quizQs[each][3:])
-	elif quizQs[each][0:3] == '---':
-		wrongChoice(quizQs[each][3:])
-	elif quizQs[each][0:3] == 'qqq':
+countTemp = 0
+while len(quizQs) > 0:
+	temp = []
+	countTemp += 1 
+	for each in range(len(quizQs)):
+		if each == 0:
+			temp.append(quizQs[0])
+		elif quizQs[each].startswith('+++') or quizQs[each].startswith('---'):
+			temp.append(quizQs[each])
+		else:
+			break
+	print('Question number {} is being processed'.format(countTemp))
+	
+	for each in range(len(temp)):
+		if quizQs[each].startswith('qqq'):
+			outfileBeg(quizQs[each][3:])
+			time.sleep(0.05)
+			print('...question body added')
+		elif quizQs[each].startswith('qmq'):
+			outfileBeg(quizQs[each][3:], 'mult')
+			time.sleep(0.05)
+			print('...question body added')
+		elif quizQs[each].startswith('qh'):
+			columnNumber(quizQs[each][2])
+			outfileBeg(quizQs[each][3:], horiz = True)
+			time.sleep(0.05)
+			print('...question body added')
+		elif quizQs[each].startswith('+++'):
+			correctChoice(quizQs[each][3:])
+			time.sleep(0.05)
+			print('...correct answer added')
+		elif quizQs[each].startswith('---'):
+			wrongChoice(quizQs[each][3:])
+			time.sleep(0.05)
+			print('...incorrect answer added')
+		else:
+			time.sleep(0.05)
+			print('...unnecessary stuff removed')
+			continue
+	if temp[0].startswith('qqq'):
 		outfileEnding()
-		outfileBeg(quizQs[each][3:])
-	else:
-		continue
-
-outfileEnding()
-
-### loop for mult questions
-
-if os.path.exists('Qms.txt'):
-	quizMultiFile = open('Qms.txt', encoding = 'utf8') 
-	quizQms = quizMultiFile.read().splitlines()
-	quizMultiFile.close()
-	multSymbole = '\\begin{flushleft}\n  {\\bf Questions using the sign \\multiSymbole{} have several correct answers}\n\\end{flushleft}'
-	for each in range(len(quizQms)):
-		if each == 0 and quizQms[0][0:3] == 'qmq':
-			outfileBeg(quizQms[0][3:], 'mult')
-		elif quizQms[each][0:3] == '+++':
-			correctChoice(quizQms[each][3:])
-		elif quizQms[each][0:3] == '---':
-			wrongChoice(quizQms[each][3:])
-		elif quizQms[each][0:3] == 'qmq':
-			outfileEnding('mult')
-			outfileBeg(quizQms[each][3:], 'mult')
-		else:
-			continue
-	outfileEnding('mult')
-
-### loop for horiz questions
-
-if os.path.exists('Qhs.txt'):
-	quizHorizFile = open('Qhs.txt', encoding = 'utf8') 
-	quizQhs = quizHorizFile.read().splitlines()
-	quizHorizFile.close()
-	for each in range(len(quizQhs)):
-		if each == 0 and quizQhs[0][0:2] == 'qh':
-			columnNumber(quizQhs[0][2])
-			outfileBeg(quizQhs[0][3:],horiz = True)
-		elif quizQhs[each][0:3] == '+++':
-			correctChoice(quizQhs[each][3:])
-		elif quizQhs[each][0:3] == '---':
-			wrongChoice(quizQhs[each][3:])
-		elif quizQhs[each][0:2] == 'qh':
-			columnNumber(quizQhs[each][2])
-			outfileEnding(horiz = True)
-			outfileBeg(quizQhs[each][3:], horiz = True)
-		else:
-			continue
-	outfileEnding(horiz = True)
+	elif temp[0].startswith('qmq'):
+		outfileEnding('mult')
+	elif temp[0].startswith('qh'):
+		outfileEnding(horiz = True)
+	print('Question number {} was processed successfully'.format(countTemp))
+	time.sleep(0.15)
+	for each in range(len(temp)):
+		quizQs.pop(0)
 
 ### LAST PART OF AMC FILE
 
@@ -256,7 +264,7 @@ outfile.writelines('''
   \\begin{minipage}{.4\\linewidth}
   \\bf '''+ dateOfTestM + ''' %date if needed
   \\end{minipage}
-  \\vspace{1ex}''' + multSymbole + '''
+  \\vspace{1ex}''' + multSymbole + '''\\ \n \\
   %%% Questions
 
 
