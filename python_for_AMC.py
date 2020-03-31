@@ -309,7 +309,10 @@ outfile.writelines('''
 
 outfile.close()
 
-print('I am downloading !wrongCorrect.png! that should be placed in the final test folder')
-pathForPNG = os.getcwd()
-url = 'https://github.com/mirakklys/python_for_AMC/blob/master/wrongCorrect.png'
-urllib.request.urlretrieve(url, pathForPNG)
+try:
+	pathForPNG = os.getcwd()
+	url = 'https://github.com/mirakklys/python_for_AMC/blob/master/wrongCorrect.png'
+	urllib.request.urlretrieve(url, pathForPNG)
+	print('I am downloading !wrongCorrect.png! that should be placed in the final test folder')
+except:
+	print('I couldn\'t download !wrongCorrect.png! from the GitHub, download it manually from https://github.com/mirakklys/python_for_AMC/blob/master/wrongCorrect.png and place in the final test folder')
