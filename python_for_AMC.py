@@ -7,6 +7,7 @@
 import sys
 import os.path
 import time
+import urllib.request
 
 ### declarations
 
@@ -56,7 +57,7 @@ def outfileBeg(argQuizMulti, qmult = '', horiz = False):
 	horizLine = ''
 	if horiz == True:
 		horizLine = '    \\begin{multicols}{' + columnNum + '}\n'
-	outfile.writelines('\\element{general}{\n  \\begin{question' + qmult + '}{' + questionNumber + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n')
+	outfile.writelines('\\element{general}{\n  \\begin{question' + qmult + '}{' + qmult + questionNumber + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n')
 
 ### function to finish the question
 
@@ -307,3 +308,8 @@ outfile.writelines('''
 ### Finalised programme
 
 outfile.close()
+
+print('I am downloading !wrongCorrect.png! that should be placed in the final test folder')
+pathForPNG = os.getcwd()
+url = 'https://github.com/mirakklys/python_for_AMC/blob/master/wrongCorrect.png'
+urllib.request.urlretrieve(url, pathForPNG)
