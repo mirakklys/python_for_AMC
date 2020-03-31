@@ -4,7 +4,7 @@ This is the automation of AMC redaction. The internal AMC-TXT should be working 
 Place both <b>python_for_AMC.py</b> and <b>wrongCorrect.png</b> files in the folder with questions you want to convert.
 
 The main rules:
-1. Questions should be saved in separate <b>Qs.txt</b>, <b>Qms.txt</b> or <b>Qhs.txt</b>, file utf-8 encoded depending on the type of questions
+1. Questions should be saved in ~~separate <b>Qs.txt</b>, <b>Qms.txt</b> or <b>Qhs.txt</b>~~, file utf-8 encoded depending on the type of questions
 2. Simple question should start with <tt>'qqq'</tt> (see the example below)
 3. Multi correct answer questions should start with triple <tt>'qmq'</tt> (see the example below)
 4. Horizontal answer questions should start with <tt>'qhq'</tt> (5 columns by default) or <tt>'qhN'</tt>, where N is an integer reflecting the number of columns. I decided not to use the <tt>{choiceshoriz}</tt> since this option won't align the answers left. If you have 3 and less answers (e.g. True or False) you could leave default <tt>'qhq'</tt>
