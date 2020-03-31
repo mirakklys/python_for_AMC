@@ -42,6 +42,10 @@ The processed file will be in the same folder, called <b>prcssdQs.txt</b>
 
 # List of changes:
 
+# 0.3.0 
+
+Now the script will process a single file <b>Qs.txt</b>
+
 # 0.2.1
 
 I jumped 0.2.0 because introduced the open answer questions in 0.1.1 version
