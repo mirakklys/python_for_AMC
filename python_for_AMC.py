@@ -7,94 +7,24 @@
 import sys
 import os.path
 import time
-import urllib.request
+import urllib.request as ulr
 
-### declarations
+### logging function
 
-quizFile = open('Qs.txt', encoding = "utf8") 
-quizQs = [each.strip() for each in quizFile if len(each) > 1]
-#for each in quizFile:
-#	if len(each) > 1:
-#		quizQs.append(each.strip())
-quizFile.close()
-outfile = open('prcssdQs.txt', 'wt', encoding = "utf8")
-count = 1
-questionNumber = 0
-columnNum = '5'
-multSymbole = ''
 
-### Preparing the questions for LaTeX
-
-prohibSymbs = ['\\', '%', '$', '{', '_', '|', '™', '£', '#', '&', '}', '§', '<', '®', '©', '°', '>', '~', '^', 'ULINEDSPACE']
-escSymbs = ['\\\\', '\\%', '\\$', '\\{', '\\_', 'extbar', 'exttrademark', '\\pounds', '\\#', '\\&', '\\}', '\\S', '\\txtless', '\\textregistered', '\\copyright', '\\textdegree', '\\textgreater', '\\~{}', '\\^{}', ]
-
-for every in range(len(quizQs)):
-	for each in range(len(prohibSymbs)):
-		if prohibSymbs[each] in quizQs[every]:
-			quizQs[every] = quizQs[every].replace(prohibSymbs[each], escSymbs[each])
-
-### FUNCTIONS
-
-### function to number the question
-
-def questNum():
-	global count
-	if count < 10:
-		questNum = "q00" + str(count)
-	elif count >= 100:
-		questNum = "q" + str(count)
-	else:
-		questNum = "q0" + str(count)
-	count += 1
-	return questNum
-
-### function to start the question
-
-def outfileBeg(argQuizMulti, qmult = '', horiz = False):
-	global columnNum
-	global questionNumber
-	questionNumber = questNum()
-	horizLine = ''
-	if horiz == True:
-		horizLine = '    \\begin{multicols}{' + columnNum + '}\n'
-	outfile.writelines('\\element{general}{\n  \\begin{question' + qmult + '}{' + qmult + questionNumber + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n')
-
-### function to finish the question
-
-def outfileEnding(qmult = '', horiz = False):
-	horizLine = ''
-	if horiz == True:
-		horizLine = '    \\end{multicols}\n'
-	outfile.writelines('    \\end{choices}\n' + horizLine + '  \\end{question' + qmult + '}\n} % element\n')
-
-### functions for correct and wrong answers
-
-def correctChoice(choice):
-	outfile.writelines('      \\correctchoice{' + choice + '}\n')
-
-def wrongChoice(choice):
-	outfile.writelines('      \\wrongchoice{' + choice + '}\n')
-
-### function to code column number
-
-def columnNumber(value):
-	global columnNum
-	global questionNumber
-	try:
-		int(value)
-		columnNum = value
-	except:
-		thisIsSparta = int(questionNumber[1:]) + 1
-		if thisIsSparta < 10:
-			questNumb = "q00" + str(thisIsSparta)
-		elif thisIsSparta >= 100:
-			questNumb = "q" + str(thisIsSparta)
-		else:
-			questNumb = "q0" + str(thisIsSparta)
-		print('The question ' + questNumb + ' will have the default number of columns {5}')
+def logFileF(strToLog, n = 0, date = True, zone = False):
+	logFile = open('log.txt', 'a+')
+	timeZone = ''
+	if zone:
+		timeZone = ' - ' + time.strftime("%z - %Z")  
+	if date:
+		logFile.write('***' + time.strftime("%H:%M:%S") + timeZone + '\n')
+	logFile.write(strToLog)
+	logFile.write('\n' * n)
+	logFile.close()
 
 ### inputs for test
-
+logFileF('~~~Date: ' + time.strftime('%Y %B %d %A'), 1, zone = True)
 copyNumber = input("How many copies will you need? ")
 try:
 	int(copyNumber)
@@ -160,6 +90,98 @@ else:
 
 dateOfTestM = monthList[month] + " " + str(day) + ", " + str(year)
 
+
+### declarations
+
+quizFile = open('Qs.txt', encoding = "utf8") 
+quizQs = [each.strip() for each in quizFile if len(each) > 1]
+#for each in quizFile:
+#	if len(each) > 1:
+#		quizQs.append(each.strip())
+quizFile.close()
+outfile = open('prcssdQs.txt', 'wt', encoding = "utf8")
+count = 1
+questionNumber = '1'
+columnNum = '5'
+multSymbole = ''
+
+logFileF('   Exam name: ' + examName + '\n   Exam date: ' + dateOfTestM + '\n   Exam copies Number: ' + copyNumber + '\n   Exam ID number digits: ' + studentIdNumber + '\n   Exam multiple correct choice: ' + str(askMult.lower() == 'y' or askMult.lower() == 'yes') + '\n', 1)
+
+logFileF('... imports and script declarations are successful\n')
+
+### Preparing the questions for LaTeX
+
+prohibSymbs = ['\\', '%', '$', '{', '_', '|', '™', '£', '#', '&', '}', '§', '<', '®', '©', '°', '>', '~', '^', 'ULINEDSPACE']
+escSymbs = ['\\\\', '\\%', '\\$', '\\{', '\\_', 'extbar', 'exttrademark', '\\pounds', '\\#', '\\&', '\\}', '\\S', '\\txtless', '\\textregistered', '\\copyright', '\\textdegree', '\\textgreater', '\\~{}', '\\^{}', ]
+
+for every in range(len(quizQs)):
+	for each in range(len(prohibSymbs)):
+		if prohibSymbs[each] in quizQs[every]:
+			quizQs[every] = quizQs[every].replace(prohibSymbs[each], escSymbs[each])
+logFileF('... replaced LaTeX-prohibited characters\n', date = False)
+
+### FUNCTIONS
+
+### function to number the question
+
+def questNum():
+	global count
+	if count < 10:
+		questNum = "q00" + str(count)
+	elif count >= 100:
+		questNum = "q" + str(count)
+	else:
+		questNum = "q0" + str(count)
+	count += 1
+	return questNum
+
+### function to start the question
+
+def outfileBeg(argQuizMulti, qmult = '', horiz = False):
+	global columnNum
+	global questionNumber
+	questionNumber = questNum()
+	horizLine = ''
+	if horiz == True:
+		horizLine = '    \\begin{multicols}{' + columnNum + '}\n'
+	outfile.writelines('\\element{general}{\n  \\begin{question' + qmult + '}{' + qmult + questionNumber + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n')
+
+### function to finish the question
+
+def outfileEnding(qmult = '', horiz = False):
+	horizLine = ''
+	if horiz == True:
+		horizLine = '    \\end{multicols}\n'
+	outfile.writelines('    \\end{choices}\n' + horizLine + '  \\end{question' + qmult + '}\n} % element\n')
+
+### functions for correct and wrong answers
+
+def correctChoice(choice):
+	outfile.writelines('      \\correctchoice{' + choice + '}\n')
+
+def wrongChoice(choice):
+	outfile.writelines('      \\wrongchoice{' + choice + '}\n')
+
+### function to code column number
+
+def columnNumber(value):
+	global columnNum
+	global questionNumber
+	try:
+		int(value)
+		columnNum = value
+	except:
+		thisIsSparta = int(questionNumber[1:]) + 1
+		if thisIsSparta < 10:
+			questNumb = "q00" + str(thisIsSparta)
+		elif thisIsSparta >= 100:
+			questNumb = "q" + str(thisIsSparta)
+		else:
+			questNumb = "q0" + str(thisIsSparta)
+		print('The question ' + questNumb + ' will have the default number of columns {5}')
+
+logFileF('... function declarations are successful\n', date = False)
+
 ### FIRST PART OF AMC FILE
 
 outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -196,6 +218,7 @@ outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \\setdefaultgroupmode{withoutreplacement}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Grouping the questions-answers\n''')
+logFileF('... LaTeX header is written successfully\n', 1, date = False)
 
 ### QUESTIONS LOOP
 
@@ -204,6 +227,7 @@ countTemp = 0
 while len(quizQs) > 0:
 	temp = []
 	countTemp += 1 
+	countTempStr = str(countTemp)
 	for each in range(len(quizQs)):
 		if each == 0:
 			temp.append(quizQs[0])
@@ -212,32 +236,39 @@ while len(quizQs) > 0:
 		else:
 			break
 	print('Question number {} is being processed'.format(countTemp))
+	logFileF('...Question ' + countTempStr + ' is being processed\n')
 	
 	for each in range(len(temp)):
 		if quizQs[each].startswith('qqq'):
 			outfileBeg(quizQs[each][3:])
-			time.sleep(0.05)
+			time.sleep(0.01)
 			print('...question body added')
+			logFileF('...qestion ' + countTempStr + ' body added\n', date = False)
 		elif quizQs[each].startswith('qmq'):
 			outfileBeg(quizQs[each][3:], 'mult')
-			time.sleep(0.05)
+			time.sleep(0.01)
 			print('...question body added')
+			logFileF('...qestion ' + countTempStr + ' body added\n', date = False)
 		elif quizQs[each].startswith('qh'):
 			columnNumber(quizQs[each][2])
 			outfileBeg(quizQs[each][3:], horiz = True)
-			time.sleep(0.05)
+			time.sleep(0.01)
 			print('...question body added')
+			logFileF('...qestion ' + countTempStr + ' body added\n', date = False)
 		elif quizQs[each].startswith('+++'):
 			correctChoice(quizQs[each][3:])
-			time.sleep(0.05)
+			time.sleep(0.01)
 			print('...correct answer added')
+			logFileF('...correct answer to qestion ' + countTempStr + ' added\n', date = False)
 		elif quizQs[each].startswith('---'):
 			wrongChoice(quizQs[each][3:])
-			time.sleep(0.05)
+			time.sleep(0.01)
 			print('...incorrect answer added')
+			logFileF('...incorrect answer to qestion ' + countTempStr + ' added\n', date = False)
 		else:
-			time.sleep(0.05)
-			print('...unnecessary stuff removed')
+			time.sleep(0.01)
+			print('...unnecessary ' + quizQs[each] + ' stuff removed')
+			logFileF('...trash ' + quizQs[each] + ' is disposed of\n', date = False)
 			continue
 	if temp[0].startswith('qqq'):
 		outfileEnding()
@@ -246,7 +277,8 @@ while len(quizQs) > 0:
 	elif temp[0].startswith('qh'):
 		outfileEnding(horiz = True)
 	print('Question number {} was processed successfully'.format(countTemp))
-	time.sleep(0.15)
+	logFileF('...Question ' + countTempStr + ' processed successfully\n', 1, date = False)
+	time.sleep(0.1)
 	for each in range(len(temp)):
 		quizQs.pop(0)
 
@@ -304,15 +336,21 @@ outfile.writelines('''
   \\AMCcleardoublepage 
 } % onecopy
 \\end{document}''')
+logFileF('...LaTeX footer is written successfully\n', 1)
 
 ### Finalised programme
 
 outfile.close()
 
 try:
-	pathForPNG = os.getcwd()
 	url = 'https://github.com/mirakklys/python_for_AMC/blob/master/wrongCorrect.png'
-	urllib.request.urlretrieve(url, pathForPNG)
-	print('I am downloading !wrongCorrect.png! that should be placed in the final test folder')
+	ulr.urlretrieve(url, 'wrongCorrect.png')
+	print('I\'ve downloaded !wrongCorrect.png!\n Placed in the final test folder')
+	logFileF('...wrongCorrect.png image file is downloaded successfully\n')
+
 except:
+	pathForPNG = os.getcwd()
 	print('I couldn\'t download !wrongCorrect.png! from the GitHub, download it manually from https://github.com/mirakklys/python_for_AMC/blob/master/wrongCorrect.png and place in the final test folder')
+	logFileF('...Couldn\'t download the file to ' + pathForPNG)
+	
+logFileF('\n\n\n', date = False)
