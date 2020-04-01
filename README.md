@@ -49,7 +49,7 @@ Now the <b>wrongCorrect.png</b> image is downloaded in the end of the process
 
 Also added the log file creation. You will need to delete it yourself, with time it is going to take some space on your computer
 
-Reason for adding: in past hundreds of script executions it never failed. However, while it was a Midterm exam, the question FOR LOOP was terminated and never raised an issue. This led to incomplete test (about 20% of questions were omitted), while the rest of the script went well. I couldn't catch the error, and couldn't reproduce it, so HAIL THE LOG. If you have any issues with this log, send it to me, my working email is mirakklys.gh@gmail.com
+Reason for adding: in past hundreds of script executions it never failed. However, while it was a Midterm exam, the question FOR LOOP was terminated and never raised an issue. This led to incomplete test (about 20% of questions were omitted), while the rest of the script went well. I couldn't catch the error, and couldn't reproduce it, so HAIL THE LOG. If you have any issues like I mentioned, send the log to me along with your <b>Qs.txt</b> and <b>prcssdQs.txt</b>, my working email is mirakklys.gh@gmail.com
 
 # 0.3.1
 
