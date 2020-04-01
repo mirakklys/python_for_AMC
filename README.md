@@ -1,7 +1,7 @@
 # Auto Multiple Choice for Linux. AMC. Python-assisted source.tex creation. Only for tests with separate answer sheets!
 This is the automation of AMC redaction. The internal AMC-TXT should be working in a similar way, but I wanted the one that reflects my needs, if you want you can freely use it :)
 
-Place both <b>python_for_AMC.py</b> and <b>wrongCorrect.png</b> files in the folder with questions you want to convert.
+Place both <b>python_for_AMC.py</b> ~~and <b>wrongCorrect.png</b> files~~ file in the folder with questions you want to convert. The <b>wrongCorrect.png</b> image will be fetched into the same directory while executing <b>python_for_AMC.py</b> since 0.4.0 Version
 
 The main rules:
 1. Questions should be saved in ~~separate <b>Qs.txt</b>, <b>Qms.txt</b> or <b>Qhs.txt</b>~~ one file <b>Qs.txt</b>, file utf-8 encoded depending on the type of questions
@@ -42,6 +42,18 @@ qh4What is our genome made of
 The processed file will be in the same folder, called <b>prcssdQs.txt</b>
 
 # List of changes:
+
+# 0.4.0
+
+Now the <b>wrongCorrect.png</b> image is downloaded in the end of the process
+
+Also added the log file creation. You will need to delete it yourself, with time it is going to take some space on your computer
+
+Reason for adding: in past hundreds of script executions it never failed. However, while it was a Midterm exam, the question FOR LOOP was terminated and never raised an issue. This led to incomplete test (about 20% of questions were omitted), while the rest of the script went well. I couldn't catch the error, and couldn't reproduce it, so HAIL THE LOG. If you have any issues with this log, send it to me, my working email is mirakklys.gh@gmail.com
+
+# 0.3.1
+
+Minor changes
 
 # 0.3.0 
 
