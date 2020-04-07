@@ -1,4 +1,4 @@
-#!/usr/bin/python3.7
+#!/usr/bin/env python3
 ### GLOBAL DECLARATIONS
 ### All text after %%% sign will go to comments in LaTeX-based AMC
 
@@ -14,23 +14,22 @@ import urllib.request as ulr
 
 def logFileF(strToLog, n = 0, date = True, zone = False):
 	logFile = open('log.txt', 'a+')
-	timeZone = ''
-	if zone:
-		timeZone = ' - ' + time.strftime("%z - %Z")  
-	if date:
-		logFile.write('***' + time.strftime("%H:%M:%S") + timeZone + '\n')
-	logFile.write(strToLog)
-	logFile.write('\n' * n)
+	timeZone = ' - ' + time.strftime("%z - %Z") if zone else '' 
+	dateStr = '***' + time.strftime("%H:%M:%S") + timeZone + '\n' if date else ''
+	newLine = '\n'
+	logFile.write(dateStr + strToLog + newLine * n)
 	logFile.close()
 
 ### inputs for test
 logFileF('~~~Date: ' + time.strftime('%Y %B %d %A'), 1, zone = True)
+
 copyNumber = input("How many copies will you need? ")
 try:
 	int(copyNumber)
 except:
 	print("Wrong value. Should be a number, not a string")
 	sys.exit()
+
 dateOfTest = input("Enter the date of the exam in the format YYYYMMDD: ")
 try:
 	dateCheck = int(dateOfTest)
@@ -40,7 +39,9 @@ except:
 if dateCheck < 20200101 or dateCheck > 20991231:
 	print("Wrong date format! Revise the date.")
 	sys.exit()
+
 examName = input("Please name your exam (if two lines needed place two backslash \\\\ on the linebreak): ")
+
 studentIdNumber = input("How many digits are in student ID number? (2-12 digits allowed) ")
 try:
 	studentId = int(studentIdNumber)
@@ -50,9 +51,10 @@ except:
 if studentId < 2 or studentId > 12:
 	print("Error! Should be between 2 and 12 digits")
 	sys.exit()
+
+yess = ['y', 'yes', 'Y', 'YES']
 askMult = input("Will you have any multiple correct choice answers? (y/n)")
-if askMult.lower() == 'y' or askMult.lower() == 'yes':
-	multSymbole = '\\begin{flushleft}\n  {\\bf Questions using the sign \\multiSymbole{} have several correct answers}\n\\end{flushleft}'
+multSymbole = '\\begin{flushleft}\n  {\\bf Questions using the sign \\multiSymbole{} have several correct answers}\n\\end{flushleft}' if askMult in yess else ''
 
 ### date processing
 
@@ -90,35 +92,33 @@ else:
 
 dateOfTestM = monthList[month] + " " + str(day) + ", " + str(year)
 
-
 ### declarations
 
 quizFile = open('Qs.txt', encoding = "utf8") 
 quizQs = [each.strip() for each in quizFile if len(each) > 1]
-#for each in quizFile:
-#	if len(each) > 1:
-#		quizQs.append(each.strip())
 quizFile.close()
 outfile = open('prcssdQs.txt', 'wt', encoding = "utf8")
+
 count = 1
 questionNumber = '1'
 columnNum = '5'
-multSymbole = ''
 
-logFileF('   Exam name: ' + examName + '\n   Exam date: ' + dateOfTestM + '\n   Exam copies Number: ' + copyNumber + '\n   Exam ID number digits: ' + studentIdNumber + '\n   Exam multiple correct choice: ' + str(askMult.lower() == 'y' or askMult.lower() == 'yes') + '\n', 1)
-
+logFileF('   Exam name: ' + examName + '\n   Exam date: ' + dateOfTestM + '\n   Exam copies Number: ' + copyNumber + '\n   Exam ID number digits: ' + studentIdNumber + '\n   Exam multiple correct choice: ' + str(askMult in yess) + '\n', 1)
 logFileF('... imports and script declarations are successful\n')
 
 ### Preparing the questions for LaTeX
 
 prohibSymbs = ['\\', '%', '$', '{', '_', '|', '™', '£', '#', '&', '}', '§', '<', '®', '©', '°', '>', '~', '^', 'ULINEDSPACE']
-escSymbs = ['\\\\', '\\%', '\\$', '\\{', '\\_', 'extbar', 'exttrademark', '\\pounds', '\\#', '\\&', '\\}', '\\S', '\\txtless', '\\textregistered', '\\copyright', '\\textdegree', '\\textgreater', '\\~{}', '\\^{}', ]
+escSymbs = ['\\\\', '\\%', '\\$', '\\{', '\\_', '\\textbar', '\\texttrademark', '\\pounds', '\\#', '\\&', '\\}', '\\S', '\\txtless', '\\textregistered', '\\copyright', '\\textdegree', '\\textgreater', '\\~{}', '\\^{}', '\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_']
 
 for every in range(len(quizQs)):
+	tempProhib = []
 	for each in range(len(prohibSymbs)):
 		if prohibSymbs[each] in quizQs[every]:
 			quizQs[every] = quizQs[every].replace(prohibSymbs[each], escSymbs[each])
-logFileF('... replaced LaTeX-prohibited characters\n', date = False)
+			if prohibSymbs[each] not in tempProhib:
+				tempProhib.append(prohibSymbs[each])
+logFileF('... replaced LaTeX-prohibited characters: ' + ', '.join(tempProhib) + '\n', date = False)
 
 ### FUNCTIONS
 
@@ -141,17 +141,14 @@ def outfileBeg(argQuizMulti, qmult = '', horiz = False):
 	global columnNum
 	global questionNumber
 	questionNumber = questNum()
-	horizLine = ''
-	if horiz == True:
-		horizLine = '    \\begin{multicols}{' + columnNum + '}\n'
-	outfile.writelines('\\element{general}{\n  \\begin{question' + qmult + '}{' + qmult + questionNumber + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n')
+	haut = '\\scoring{haut=2,p=0}' if qmult != '' else ''
+	horizLine = '    \\begin{multicols}{' + columnNum + '}\n' if horiz else ''
+	outfile.writelines('\\element{general}{\n  \\begin{question' + qmult + '}{' + qmult + questionNumber + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n' + haut)
 
 ### function to finish the question
 
 def outfileEnding(qmult = '', horiz = False):
-	horizLine = ''
-	if horiz == True:
-		horizLine = '    \\end{multicols}\n'
+	horizLine = '    \\end{multicols}\n' if horiz else ''
 	outfile.writelines('    \\end{choices}\n' + horizLine + '  \\end{question' + qmult + '}\n} % element\n')
 
 ### functions for correct and wrong answers
@@ -178,7 +175,7 @@ def columnNumber(value):
 			questNumb = "q" + str(thisIsSparta)
 		else:
 			questNumb = "q0" + str(thisIsSparta)
-		print('The question ' + questNumb + ' will have the default number of columns {5}')
+		print('The question ' + questNumb + ' will have the default number of columns - 5')
 
 logFileF('... function declarations are successful\n', date = False)
 
@@ -217,7 +214,7 @@ outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \\AMCformHSpace=0.3ex
 \\setdefaultgroupmode{withoutreplacement}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Grouping the questions-answers\n''')
+%% Grouping the questions-answers\n\n''')
 logFileF('... LaTeX header is written successfully\n', 1, date = False)
 
 ### QUESTIONS LOOP
@@ -297,7 +294,7 @@ outfile.writelines('''
   \\begin{minipage}{.4\\linewidth}
   \\bf '''+ dateOfTestM + ''' %date if needed
   \\end{minipage}
-  \\vspace{1ex}''' + multSymbole + '''\\ \n \\
+  \\vspace{1ex}''' + multSymbole + '''\\\\ \n \\\\
   %%% Questions
 
 
@@ -353,4 +350,4 @@ except:
 	print('I couldn\'t download !wrongCorrect.png! from the GitHub, download it manually from https://github.com/mirakklys/python_for_AMC/blob/master/wrongCorrect.png and place in the final test folder')
 	logFileF('...Couldn\'t download the file to ' + pathForPNG)
 	
-logFileF('\n\n\n', date = False)
+logFileF('\n~~~Writing to file finished, all files are closed\n\n', date = False)
