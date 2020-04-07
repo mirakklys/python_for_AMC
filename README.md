@@ -43,6 +43,12 @@ The processed file will be in the same folder, called <b>prcssdQs.txt</b>
 
 # List of changes:
 
+# 0.4.1 
+
+A lot of optimisations. Changed the SheBang
+
+Fixed the bug with \insertgroup
+
 # 0.4.0
 
 Now the <b>wrongCorrect.png</b> image is downloaded in the end of the process
