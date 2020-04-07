@@ -47,7 +47,7 @@ The processed file will be in the same folder, called <b>prcssdQs.txt</b>
 
 A lot of optimisations. Changed the SheBang
 
-Fixed the bug with \insertgroup
+Fixed the bug with <pre>\insertgroup</pre>
 
 # 0.4.0
 
