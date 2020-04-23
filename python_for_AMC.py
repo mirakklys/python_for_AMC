@@ -13,12 +13,12 @@ import urllib.request as ulr
 
 
 def logFileF(strToLog, n = 0, date = True, zone = False):
-	logFile = open('log.txt', 'a+')
-	timeZone = ' - ' + time.strftime("%z - %Z") if zone else '' 
-	dateStr = '***' + time.strftime("%H:%M:%S") + timeZone + '\n' if date else ''
-	newLine = '\n'
-	logFile.write(dateStr + strToLog + newLine * n)
-	logFile.close()
+	with open('log.txt', 'a+') as logFile:
+		timeZone = ' - ' + time.strftime("%z - %Z") if zone else '' 
+		dateStr = '***' + time.strftime("%H:%M:%S") + timeZone + '\n' if date else ''
+		newLine = '\n'
+		logFile.write(dateStr + strToLog + newLine * n)
+	
 
 ### inputs for test
 logFileF('~~~Date: ' + time.strftime('%Y %B %d %A'), 1, zone = True)
@@ -350,4 +350,4 @@ except:
 	print('I couldn\'t download !wrongCorrect.png! from the GitHub, download it manually from https://github.com/mirakklys/python_for_AMC/blob/master/wrongCorrect.png and place in the final test folder')
 	logFileF('...Couldn\'t download the file to ' + pathForPNG)
 	
-logFileF('\n~~~Writing to file finished, all files are closed\n\n', date = False)
+logFileF('\n~~~Writing to file finished, all files are closed\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n, date = False)
