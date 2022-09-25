@@ -42,8 +42,11 @@ qh4What is our genome made of
 The processed file will be in the same folder, called <b>prcssdQs.txt</b>
 
 # List of changes:
+
 # 0.4.2
+
 Fixed the problem of improper ending of the string in the line 353
+
 <b>NB!</b> To insert an image you will need to paste "<b>\\includegraphics[width=8cm]{Image_name.png}</b>" indicating a desired width of it on the page. Image should be in the same project folder on the step of compilation of the final LaTeX pdf of the exam
 
 # 0.4.1 
