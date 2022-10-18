@@ -6,9 +6,6 @@ echo "Prepping the system for installation of AMC"
 sleep 2
 echo '''
 '''
-sudo apt update
-echo '''
-'''
 echo "Upgrade"
 sleep 2
 echo '''
@@ -40,7 +37,6 @@ echo "Starting to clone repository and prepping the files"
 sleep 2
 echo '''
 '''
-sleep 2
 git clone https://github.com/mirakklys/python_for_AMC.git
 echo '''
 '''
@@ -59,8 +55,6 @@ sleep 2
 echo '''
 '''
 chmod +x python_for_AMC.py open_Qs_for_AMC.py
-echo '''
-'''
 sleep 2
 echo "Job done!"
 sleep 2
