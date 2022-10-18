@@ -337,7 +337,7 @@ logFileF('...LaTeX footer is written successfully\n', 1)
 outfile.close()
 
 try:
-	url = 'https://github.com/mirakklys/python_for_AMC/raw/master/wrongCorrect.png'
+	url = 'https://github.com/mirakklys/python_for_AMC/raw/master/source/wrongCorrect.png'
 	ulr.urlretrieve(url, 'wrongCorrect.png')
 	print('I\'ve downloaded !wrongCorrect.png!\n Placed in the final test folder')
 	logFileF('...wrongCorrect.png image file is downloaded successfully\n')
