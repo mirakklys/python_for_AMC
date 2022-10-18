@@ -30,8 +30,8 @@ sleep 1
 if [[ answer_to_q2 = "N" ]] || [[ answer_to_q2 = "n" ]] || [[ answer_to_q2 = "no" ]] || [[ answer_to_q2 = "NO" ]] ; then
     echo -e "\033[1mPlease copy/move Qs.txt file to ~/Desktop/$exam_name\033[0m"
 else 
-    cd ~/Desktop/$exam_name/
-    ~/Desktop/$exam_name/python_for_AMC.py
+    cd ~/Desktop/${exam_name}/
+    ~/Desktop/${exam_name}/python_for_AMC.py
 fi
 
 cd -
