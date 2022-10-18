@@ -25,14 +25,14 @@ sleep 2
 echo '''
 '''
 sudo apt autoremove -y
-mkdir ~/Desktop/amc_py
+mkdir ~/Desktop/$exam_name
 echo '''
 '''
 echo "Creating folder for AMC on Desktop"
 sleep 2
 echo '''
 '''
-cd ~/Desktop/amc_py
+cd ~/Desktop/$exam_name
 echo "Starting to clone repository and prepping the files"
 sleep 2
 echo '''
@@ -43,10 +43,10 @@ echo '''
 sleep 2
 echo "Downloading complete"
 sleep 2
-cd ~/Desktop/amc_py/python_for_AMC/source
-echo "Moving necessary files to amc_py folder"
-mv -t ~/Desktop/amc_py python_for_AMC.py open_Qs_for_AMC.py Qs.txt wrongCorrect.png
-cd ~/Desktop/amc_py
+cd ~/Desktop/$exam_name/python_for_AMC/source
+echo "Moving necessary files to $exam_name folder"
+mv -t ~/Desktop/$exam_name python_for_AMC.py open_Qs_for_AMC.py Qs.txt wrongCorrect.png
+cd ~/Desktop/$exam_name
 echo '''
 '''
 echo "Removing unnecessary files"
