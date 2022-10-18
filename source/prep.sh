@@ -47,10 +47,10 @@ echo '''
 sleep 2
 echo "Downloading complete"
 sleep 2
-cd python_for_AMC/source
+cd ~/Desktop/amc_py/python_for_AMC/source
 echo "Moving necessary files to amc_py folder"
-mv -t ../.. python_for_AMC.py open_Qs_for_AMC.py Qs.txt wrongCorrect.png
-cd ../..
+mv -t ~/Desktop/amc_py python_for_AMC.py open_Qs_for_AMC.py Qs.txt wrongCorrect.png
+cd ~/Desktop/amc_py
 echo '''
 '''
 echo "Removing unnecessary files"
