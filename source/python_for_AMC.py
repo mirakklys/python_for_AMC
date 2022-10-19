@@ -336,15 +336,15 @@ logFileF('...LaTeX footer is written successfully\n', 1)
 
 outfile.close()
 
-try:
-	url = 'https://github.com/mirakklys/python_for_AMC/raw/master/source/wrongCorrect.png'
-	ulr.urlretrieve(url, 'wrongCorrect.png')
-	print('I\'ve downloaded !wrongCorrect.png!\n Placed in the final test folder')
-	logFileF('...wrongCorrect.png image file is downloaded successfully\n')
+# try:
+# 	url = 'https://github.com/mirakklys/python_for_AMC/raw/master/source/wrongCorrect.png'
+# 	ulr.urlretrieve(url, 'wrongCorrect.png')
+# 	print('I\'ve downloaded !wrongCorrect.png!\n Placed in the final test folder')
+# 	logFileF('...wrongCorrect.png image file is downloaded successfully\n')
 
-except:
-	pathForPNG = os.getcwd()
-	print('I couldn\'t download !wrongCorrect.png! from the GitHub, download it manually from https://github.com/mirakklys/python_for_AMC/blob/master/wrongCorrect.png and place in the final test folder')
-	logFileF('...Couldn\'t download the file to ' + pathForPNG)
+# except:
+# 	pathForPNG = os.getcwd()
+# 	print('I couldn\'t download !wrongCorrect.png! from the GitHub, download it manually from https://github.com/mirakklys/python_for_AMC/blob/master/wrongCorrect.png and place in the final test folder')
+# 	logFileF('...Couldn\'t download the file to ' + pathForPNG)
 	
 logFileF('\n~~~Writing to file finished, all files are closed\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n', date = False)
