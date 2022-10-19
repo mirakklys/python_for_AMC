@@ -1,0 +1,25 @@
+Ex1.
+qmqWhat is the best movie in the world? (If you declare this question with ‘qm4’ each correct answer will score 2 points while each error
+will deduct 1 point)
++++Interstellar
+---Harry Potter
++++Alita
+---Saw
+Fifty Shades of Grey
+
+Ex3.
+qqqFor discovering and describing induced pluripotent stem cells ULINEDSPACE became a Nobel Prize winner in 2012:
+---Matthew McConaughey
+---Jennifer Doudna
++++Shinya Yamanaka
+Ex4.
+qqqNobel Prize winner(s) in 2012:
+---John Gurdon
+---Jennifer Doudna
+---Shinya Yamanaka
++++Shinya Yamanaka and John Gurdon (don’t write A AND C)
+---Jennifer Doudna and Shinya Yamanaka (don’t write B AND C)
+Ex5.
+qh4Climate change is an undoubtful fact? (you could also declare them with ‘qhq’, with 5 columns being a default layout)
++++True
+---False
