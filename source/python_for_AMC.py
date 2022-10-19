@@ -42,7 +42,7 @@ if dateCheck < 20200101 or dateCheck > 20991231:
 
 examName = input("Please name your exam (if two lines needed place two backslash \\\\ on the linebreak): ")
 
-studentIdNumber = input("How many digits are in student ID number? (2-12 digits allowed) ")
+studentIdNumber = input("How many digits are in student ID number? (2-12 digits allowed): ")
 try:
 	studentId = int(studentIdNumber)
 except:
@@ -53,7 +53,7 @@ if studentId < 2 or studentId > 12:
 	sys.exit()
 
 yess = ['y', 'yes', 'Y', 'YES']
-askMult = input("Will you have any multiple correct choice answers? (y/n)")
+askMult = input("Will you have any multiple correct choice answers? (y/n): ")
 multSymbole = '\\begin{flushleft}\n  {\\bf Questions using the sign \\multiSymbole{} have several correct answers}\n\\end{flushleft}' if askMult in yess else ''
 
 ### date processing
