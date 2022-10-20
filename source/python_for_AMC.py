@@ -25,7 +25,7 @@ def logFileF(strToLog, n = 0, date = True, zone = False):
 ### inputs for test
 logFileF('~~~Date: ' + time.strftime('%Y %B %d %A'), 1, zone = True)
 
-while true:
+while True:
 	
 	copyNumber = input("How many copies will you need? ")
 	if int(copyNumber):
