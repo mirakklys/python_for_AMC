@@ -62,7 +62,10 @@ while True:
 			if monthInt < 13 and monthInt > 0:
 				
 				month = monthInt - 1
-				if dayInt > 0 and ((month in months30 and dayInt < 31) or (month in months31 and dayInt < 32) or (month == 1 and yearInt % 4 == 0 and dayInt < 30) or (month == 1 and yearInt % 4 != 0 and dayInt < 29)):
+				if dayInt > 0 and ((month in months30 and dayInt < 31) or\
+				(month in months31 and dayInt < 32) or (month == 1 and\
+				yearInt % 4 == 0 and dayInt < 30) or (month == 1 and yearInt\
+				% 4 != 0 and dayInt < 29)):
 					
 					day = dayInt
 					break
