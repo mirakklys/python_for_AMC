@@ -13,7 +13,9 @@ import urllib.request as ulr
 
 
 def logFileF(strToLog, n = 0, date = True, zone = False):
+	
 	with open('log.txt', 'a+') as logFile:
+		
 		timeZone = ' - ' + time.strftime("%z - %Z") if zone else '' 
 		dateStr = '***' + time.strftime("%H:%M:%S") + timeZone + '\n' if date else ''
 		newLine = '\n'
@@ -23,74 +25,91 @@ def logFileF(strToLog, n = 0, date = True, zone = False):
 ### inputs for test
 logFileF('~~~Date: ' + time.strftime('%Y %B %d %A'), 1, zone = True)
 
-copyNumber = input("How many copies will you need? ")
-try:
-	int(copyNumber)
-except:
-	print("Wrong value. Should be a number, not a string")
-	sys.exit()
-
-dateOfTest = input("Enter the date of the exam in the format YYYYMMDD: ")
-try:
-	dateCheck = int(dateOfTest)
-except:
-	print("Wrong value. Should be a number, e.g. 20201231")
-	sys.exit()
-if dateCheck < 20200101 or dateCheck > 20991231:
-	print("Wrong date format! Revise the date.")
-	sys.exit()
-
-examName = input("Please name your exam (if two lines needed place two backslash \\\\ on the linebreak): ")
-
-studentIdNumber = input("How many digits are in student ID number? (2-12 digits allowed): ")
-try:
-	studentId = int(studentIdNumber)
-except:
-	print("Wrong value. Should be a number, not a string")
-	sys.exit()
-if studentId < 2 or studentId > 12:
-	print("Error! Should be between 2 and 12 digits")
-	sys.exit()
-
-yess = ['y', 'yes', 'Y', 'YES']
-askMult = input("Will you have any multiple correct choice answers? (y/n): ")
-multSymbole = '\\begin{flushleft}\n  {\\bf Questions using the sign \\multiSymbole{} have several correct answers}\n\\end{flushleft}' if askMult in yess else ''
-
+while true:
+	
+	copyNumber = input("How many copies will you need? ")
+	if int(copyNumber):
+		
+		break
+	else:
+		
+		print("Wrong value. Should be a number, not a string")
+		
 ### date processing
-
 monthList = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')
 months31 = (0,2,4,6,7,9,11)
 months30 = (3,7,8,10)
 
-yearInt = int(dateOfTest[:4])
-monthInt = int(dateOfTest[4:6])
-dayInt = int(dateOfTest[6:])
+dateOfTest = input("Enter the date of the exam in the format YYYYMMDD: ")
 
-if yearInt >= 2020:
-	year = yearInt
-else:
-	print("Wrong date format! Revise the exam year.")
-	sys.exit()
+while True:
+	
+	try:
+		
+		dateCheck = int(dateOfTest)
+	except:
+		
+		print("Wrong value. Should be a number, e.g. 20201231")
+		dateOfTest = input("Enter the date of the exam in the format YYYYMMDD: ")
+	else:
+		
+		if dateCheck >= 20000101 and dateCheck <= 20991231:
+			
+			yearInt = int(dateOfTest[:4])
+			monthInt = int(dateOfTest[4:6])
+			dayInt = int(dateOfTest[6:])
 
-if monthInt < 13 and monthInt > 0:
-	month = monthInt - 1
-else:
-	print("Wrong date format! Revise the month.")
-	sys.exit()
+			if monthInt < 13 and monthInt > 0:
+				
+				month = monthInt - 1
+				if dayInt > 0 and ((month in months30 and dayInt < 31) or (month in months31 and dayInt < 32) or (month == 1 and yearInt % 4 == 0 and dayInt < 30) or (month == 1 and yearInt % 4 != 0 and dayInt < 29)):
+					
+					day = dayInt
+					break
+				else:
+					
+					print("Wrong date format! Revise the date.")
+			else:
+				
+				print("Wrong date format! Revise the month.")
+		else:
+			
+			print("Wrong date format! Revise the date.")
+		
+		dateOfTest = input("Enter the date of the exam in the format YYYYMMDD: ")
 
-if month in months30 and dayInt < 31:
-	day = dayInt
-elif month in months31 and dayInt < 32:
-	day = dayInt
-elif month == 1 and year % 4 == 0 and dayInt < 30:
-	day = dayInt
-elif month == 1 and year % 4 != 0 and dayInt < 29:
-	day = dayInt
-else:
-	print("Wrong date format! Revise the date.")
-	sys.exit()
+dateOfTestM = monthList[month] + " " + str(day) + ", " + str(yearInt)
 
-dateOfTestM = monthList[month] + " " + str(day) + ", " + str(year)
+### exam name to put on answer sheet
+examName = input("Please name your exam (if two lines needed place two backslash \\\\ on the linebreak): ")
+
+### set up ID of a student
+studentIdNumber = input("How many digits are in student ID number? (2-30 digits allowed): ")
+
+while True:
+	
+	try:
+		
+		studentId = int(studentIdNumber)
+	except:
+		
+		print("Wrong value. Should be a number, not a string")
+		studentIdNumber = input("How many digits are in student ID number? (2-30 digits allowed): ")
+	else:
+		
+		if studentId >= 2 and studentId <= 30:
+			
+			break
+		else:
+			
+			print("Error! Should be between 2 and 30 digits")
+			studentIdNumber = input("How many digits are in student ID number? (2-30 digits allowed): ")
+
+### check if there are multiple correct choice questions, so that a special sign is put before the question
+yess = ['y', 'yes']
+askMult = input("Will you have any multiple correct choice answers? (y/n): ")
+askMult = askMult.lower()
+multSymbole = '\\begin{flushleft}\n  {\\bf Questions using the sign \\multiSymbole{} have several correct answers}\n\\end{flushleft}' if askMult in yess else ''
 
 ### declarations
 
