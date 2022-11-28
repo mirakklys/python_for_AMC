@@ -13,6 +13,7 @@ The main rules:
 7. Please note, that 'Fifty Shades of Grey' will be omitted because they don't have a recognised prefix
 
 So far, most of the goals I set for the project achieved (simple questions, qmN, qhq/qhN)
+
 In future, the code will also process image containing questions (as <tt>'qiq'</tt>).
 
 The example for processing will look like:
@@ -44,10 +45,14 @@ The processed file will be in the same folder, called <b>prcssdQs.txt</b>
 # List of changes:
 
 # 1.2.4
+
 Here we have a huge update! Now you only need to download <tt>start.sh</tt>, then in your terminal (where the <tt>start.sh</tt>) type <tt>chmod +x start.sh</tt>. This will let the terminal execute the script from the shell. Unfortunately, it doesn't work with mouse rightclick "Run as Program", but we work on that. Funnily, it was working before the last update to new 6th Linux kernel.
+
 So what does the script do? It automatically updates > upgrades Linux > installs AMC (if needed), then creates a specified folder in the MC-Projects (AMC folder where all default projects are located), then downloads all needed files for a proper functioning of AMC within this project. This steps saves your time on: 1. Open AMC, 2. Press "+" to create new project, 3. Type down project name, 4. Choose mode of the project (now it is just default as the script will produce a structured file anyway).
 Then it will ask you to navigate to the file (previously, you needed to name it specifically, now just double-click on the needed any-name-file with the questions), and based on the selection, the python script will be run to produce source LaTeX file.
+
 As for now, negative marking is applied to all multiple correct choice answers, it is -0.25, and the bottom is set to 0. In the next revisions, we will allow you to choose how much you'd like to subtract for choosing incorrect options. Also we will implement "All or nothing" option. For now, it is as it is.
+
 <b>NB!</b> setting up questions with multiple correct choices is on <tt>qmN</tt> pattern, where N is a number of correct answers for this particular question. This number defines points for choosing the option, e.g. <tt>qm3</tt> makes all correct answers weigh 0.333333, and <tt>qm4</tt> - 0.25, all incorrect choices will give -0.25
 
 # 0.4.2
