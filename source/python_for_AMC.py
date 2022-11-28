@@ -112,7 +112,7 @@ while True:
 yess = ['y', 'yes']
 askMult = input("Will you have any multiple correct choice answers? (y/n): ")
 askMult = askMult.lower()
-multSymbole = '\\begin{flushleft}\n  {\\bf Questions using the sign \\multiSymbole{} have several correct answers}\n\\\[1.5\\baselineskip]\n\end{flushleft}' if askMult in yess else ''
+multSymbole = '\\begin{flushleft}\n  {\\bf Questions using the sign \\multiSymbole{} have several correct answers. Negative marking (-0.25 point) is applied to this question}\n\\\[1.5\\baselineskip]\n\\end{flushleft}' if askMult in yess else ''
 
 ### indicate if you want "None of the above" option
 
@@ -164,13 +164,12 @@ def questNum():
 
 ### function to start the question
 
-def outfileBeg(argQuizMulti, qmult = '', b = '1', m = '0', horiz = False):
+def outfileBeg(argQuizMulti, qmult = '', horiz = False):
   global columnNum
   global questionNumber
   questionNumber = questNum()
-  haut = '\\scoring{b='+ b + ',m=' + m + ',p=0}'
   horizLine = '    \\begin{multicols}{' + columnNum + '}\n' if horiz else ''
-  outfile.writelines('\\element{general}{\n  \\begin{question' + qmult + '}{' + qmult + questionNumber + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n' + haut)
+  outfile.writelines('\\element{general}{\n  \\begin{question' + qmult + '}{' + qmult + questionNumber + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n\\scoring{p=0}\n')
 
 ### function to finish the question
 
@@ -180,11 +179,11 @@ def outfileEnding(qmult = '', horiz = False):
 
 ### functions for correct and wrong answers
 
-def correctChoice(choice):
-  outfile.writelines('      \\correctchoice{' + choice + '}\n')
+def correctChoice(choice, qmqN):
+  outfile.writelines('      \\correctchoice{' + choice + '}\\scoring{b=' + qmqN + '}\n')
 
 def wrongChoice(choice):
-  outfile.writelines('      \\wrongchoice{' + choice + '}\n')
+  outfile.writelines('      \\wrongchoice{' + choice + '}\\scoring{b=0,m=-0.25}\n')
 
 ### function to code column number
 
@@ -248,6 +247,7 @@ logFileF('... LaTeX header is written successfully\n', 1, date = False)
 ### loop for simple questions
 countTemp = 0
 while len(quizQs) > 0:
+  qmqNAnsw = '1'
   temp = []
   countTemp += 1 
   countTempStr = str(countTemp)
@@ -268,7 +268,8 @@ while len(quizQs) > 0:
       print('...question body added')
       logFileF('...qestion ' + countTempStr + ' body added\n', date = False)
     elif temp[each].startswith('qm'):
-      outfileBeg(temp[each][3:], 'mult', str(round(1/int(temp[each][2]), 3)), '-0.25')
+      qmqNAnsw = str(round(1/int(temp[each][2]), 6))
+      outfileBeg(temp[each][3:], 'mult')
       time.sleep(0.1)
       print('...question body added')
       logFileF('...qestion ' + countTempStr + ' body added\n', date = False)
@@ -279,7 +280,7 @@ while len(quizQs) > 0:
       print('...question body added')
       logFileF('...qestion ' + countTempStr + ' body added\n', date = False)
     elif temp[each].startswith('+++'):
-      correctChoice(temp[each][3:])
+      correctChoice(temp[each][3:], qmqNAnsw)
       time.sleep(0.1)
       print('...correct answer added')
       logFileF('...correct answer to qestion ' + countTempStr + ' added\n', date = False)
