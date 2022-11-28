@@ -1,5 +1,5 @@
 Ex1.
-qmqWhat is the best movie in the world? (If you declare this question with ‘qm4’ each correct answer will score 2 points while each error
+qm2What is the best movie in the world? (If you declare this question with ‘qm4’ each correct answer will score 2 points while each error
 will deduct 1 point)
 +++Interstellar
 ---Harry Potter
