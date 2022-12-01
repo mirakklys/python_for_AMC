@@ -169,7 +169,7 @@ def outfileBeg(argQuizMulti, qmult = '', horiz = False):
   global questionNumber
   questionNumber = questNum()
   horizLine = '    \\begin{multicols}{' + columnNum + '}\n' if horiz else ''
-  outfile.writelines('\\element{general}{\n  \\begin{question' + qmult + '}{' + qmult + questionNumber + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n\\scoring{p=0}\n')
+  outfile.writelines('\\element{general}{\n  \\begin{question' + qmult + '}{' + questionNumber + qmult + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n\\scoring{p=0}\n')
 
 ### function to finish the question
 
