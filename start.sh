@@ -17,17 +17,10 @@ sleep 1
 
 # Decorations, fshuuuh... $COLUMNS is to show the width of terminal and feed it to printf | tr to swap spaces with tilda
 printf %"$COLUMNS"s |tr " " "~"
-echo -n -e '''\033[1mIs this the first time of using AMC on this machine? (y/n)\033[0m
-*if "yes" we will update the system, install AMC program, prep python3 environment
-Then we will download the python scripts to \033[45m\033[1m~/MC-Projects/'''$exam_name'''\033[0m: '''
-read -r answer_to_q1
-printf %"$COLUMNS"s |tr " " "~"
-
-# Normalise the answers of the user
 sleep 1
 
 # If block to install AMC
-if [[ $answer_to_q1 = "y"* ]] ; then # || [[ $answer_to_q1 = "ye" ]] || [[ $answer_to_q1 = "yes" ]] || [[ -z $answer_to_q1 ]] ; then
+if [[ $(dpkg --get-selections | grep auto-multiple-choice -c) -eq 0 ]] ; then # || [[ $answer_to_q1 = "ye" ]] || [[ $answer_to_q1 = "yes" ]] || [[ -z $answer_to_q1 ]] ; then
     echo -e '\033[1mWe start the automatic setting up\033[0m'
     printf %"$COLUMNS"s |tr " " "~"
     sleep 1
@@ -104,7 +97,7 @@ cd ~/MC-Projects/${exam_name}
 ~/MC-Projects/${exam_name}/python_for_AMC.py
 
 # Rename the output file ready for compiling LaTeX pdf
-mv prcssdQs.txt $exam_name.txt && rm python_for_AMC.py
+mv prcssdQs.txt $exam_name.txt && rm python_for_AMC.py && cp $exam_name.txt source.tex
 printf %"$COLUMNS"s |tr " " "~"
 sleep 2
 echo -e "\033[1mAll files are processed and cleaned\033[0m"
