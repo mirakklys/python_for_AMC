@@ -169,7 +169,7 @@ def outfileBeg(argQuizMulti, qmult = '', horiz = False):
   global questionNumber
   questionNumber = questNum()
   horizLine = '    \\begin{multicols}{' + columnNum + '}\n' if horiz else ''
-  outfile.writelines('\\element{general}{\n  \\begin{question' + qmult + '}{' + questionNumber + qmult + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n\\scoring{p=0}\n')
+  outfile.writelines('\\element{gr1}{\n  \\begin{question' + qmult + '}{' + questionNumber + qmult + '}\n    ' + argQuizMulti + '\n' + horizLine + '    \\begin{choices}\n\\scoring{p=0}\n')
 
 ### function to finish the question
 
@@ -208,7 +208,7 @@ logFileF('... function declarations are successful\n', date = False)
 ### FIRST PART OF AMC FILE
 
 outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\\documentclass[a4paper,11pt]{article}
+\\documentclass[a4paper,9pt]{article}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Declaring packages
 \\usepackage[utf8x]{inputenc}
@@ -312,6 +312,7 @@ outfile.writelines('''
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Actual test sheets
 \\onecopy{''' + copyNumber + '''}{
+\\begin{multicols}{2}
   %%% Beginning of the test sheet header
   %%% Exam Name
   \\begin{flushleft}
@@ -322,9 +323,21 @@ outfile.writelines('''
   \\bf '''+ dateOfTestM + ''' %date if needed
   \\end{minipage}
   \\vspace{1ex}''' + multSymbole + '''\n
+  \\end{multicols}
+  \\cleargroup{selected1}
+\\cleargroup{selected2}
+\\shufflegroup{gr1}
+\\shufflegroup{gr2}
+\\copygroup[8]{gr1}{selected1}
+\\copygroup[8]{gr2}{selected2}
+\\shufflegroup{selected1}
+\\shufflegroup{selected2}
   %%% Questions
-  \\insertgroup{general}
-  \\AMCcleardoublepage 
+  \\begin{multicols}{2}
+  \\insertgroup{selected1}
+  \\insertgroup{selected2}
+  \\AMCcleardoublepage
+  \end{multicols}
   %%% Use either \\clearpage or \\AMCcleardoublepage options. Double page will result in even number of pages for questions, so that you can print out questions double-sided and answer sheets separately
   %%% Beginning of the answer sheet
   \\AMCformBegin{
