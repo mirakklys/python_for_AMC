@@ -89,7 +89,7 @@ w_f_m=$(zenity --file-selection)
 sleep 1
 
 # Copy the question into Qs.txt in the folder of the exam 
-cp $w_f_m ~/MC-Projects/${exam_name}/Qs.txt
+cp "$w_f_m" ~/MC-Projects/${exam_name}/Qs.txt
 sleep 1
 
 # Run the script in the exam folder, so that all the files are in the same place
