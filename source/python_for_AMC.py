@@ -324,14 +324,18 @@ outfile.writelines('''
   \\end{minipage}
   \\vspace{1ex}''' + multSymbole + '''\n
   \\end{multicols}
-  \\cleargroup{selected1}
-\\cleargroup{selected2}
-\\shufflegroup{gr1}
-\\shufflegroup{gr2}
-\\copygroup[8]{gr1}{selected1}
-\\copygroup[8]{gr2}{selected2}
-\\shufflegroup{selected1}
-\\shufflegroup{selected2}
+  \cleargroup{selected1}
+  \cleargroup{selected2}
+  \shufflegroup{gr1}
+  \shufflegroup{gr1TF}
+  \shufflegroup{gr2}
+  \shufflegroup{gr2TF}
+  \copygroup[7]{gr1}{selected1}
+  \copygroup[1]{gr1TF}{selected1}
+  \copygroup[7]{gr2}{selected2}
+  \copygroup[1]{gr2TF}{selected2}
+  \shufflegroup{selected1}
+  \shufflegroup{selected2}
   %%% Questions
   \\begin{multicols}{2}
   \\insertgroup{selected1}
