@@ -208,7 +208,7 @@ logFileF('... function declarations are successful\n', date = False)
 ### FIRST PART OF AMC FILE
 
 outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\\documentclass[a4paper,9pt]{article}
+\\documentclass[a4paper,9pt]{extarticle}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Declaring packages
 \\usepackage[utf8x]{inputenc}
