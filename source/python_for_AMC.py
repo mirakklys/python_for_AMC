@@ -237,6 +237,7 @@ outfile.writelines('''%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \\def\\AMCformQuestion#1{\\vspace{\\AMCformVSpace}\\par{\\bf Q#1:} }
 \\AMCformVSpace=0.3ex
 \\AMCformHSpace=0.3ex
+%\\AMCcodeHspace=-0.1em
 \\setdefaultgroupmode{withoutreplacement}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Grouping the questions-answers\n\n''')
